@@ -1,0 +1,9 @@
+[target.'cfg(all(target_arch = "arm", target_os = "none"))']
+runner = "./scripts/flash.sh"
+
+[build]
+target = "thumbv8m.main-none-eabihf"
+
+[alias]
+flash = "run --release"
+monitor = ["run", "--manifest-path", "tools/monitor/Cargo.toml", "--target", "aarch64-apple-darwin", "--"]

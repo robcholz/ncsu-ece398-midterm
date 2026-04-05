@@ -1,0 +1,13 @@
+[project]
+name = "mkboxpro-imu-tools"
+version = "0.1.0"
+description = "Python utilities for visualizing MKBOXPRO IMU monitor output."
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.monitor-plot]
+entrypoint = "scripts/monitor_plot.py"
+notes = [
+  "No third-party Python dependencies are required.",
+  "The visualizer uses only the standard library, including tkinter.",
+]

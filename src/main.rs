@@ -1,0 +1,361 @@
+#![no_std]
+#![no_main]
+
+use core::fmt::Write as _;
+
+use embassy_executor::Spawner;
+use embassy_futures::join::join;
+use embassy_stm32::gpio::{Level, Output, Speed};
+use embassy_stm32::i2c::{Config as I2cConfig, Error as I2cError, I2c, Master};
+use embassy_stm32::mode::Blocking;
+use embassy_stm32::time::Hertz;
+use embassy_stm32::usb::{Driver, Instance};
+use embassy_stm32::{Config, bind_interrupts, peripherals, usb};
+use embassy_time::{Instant, Timer};
+use embassy_usb::Builder;
+use embassy_usb::class::cdc_acm::{CdcAcmClass, State};
+use embassy_usb::driver::EndpointError;
+use heapless::String;
+use panic_halt as _;
+
+const WHO_AM_I_REG: u8 = 0x0F;
+const ACC_OUT_START_REG: u8 = 0x28;
+const ACC_SCALE_M_S2_PER_LSB: f32 = 0.000_598_205_7;
+const CALIBRATION_SAMPLES: usize = 128;
+const STREAM_INTERVAL_MS: u64 = 20;
+
+bind_interrupts!(struct Irqs {
+    OTG_FS => usb::InterruptHandler<peripherals::USB_OTG_FS>;
+});
+
+#[derive(Clone, Copy)]
+enum SensorKind {
+    Lsm6dsv16x,
+    Lsm6dso16is,
+}
+
+impl SensorKind {
+    fn name(self) -> &'static str {
+        match self {
+            Self::Lsm6dsv16x => "LSM6DSV16X",
+            Self::Lsm6dso16is => "LSM6DSO16IS",
+        }
+    }
+
+    fn expected_whoami(self) -> u8 {
+        match self {
+            Self::Lsm6dsv16x => 0x70,
+            Self::Lsm6dso16is => 0x22,
+        }
+    }
+}
+
+#[derive(Clone, Copy)]
+struct ProbeResult {
+    sensor: SensorKind,
+    address: u8,
+    mux_high: bool,
+}
+
+#[embassy_executor::main]
+async fn main(_spawner: Spawner) {
+    let mut config = Config::default();
+    {
+        use embassy_stm32::rcc::*;
+        config.rcc.hsi = true;
+        config.rcc.pll1 = Some(Pll {
+            source: PllSource::HSI,
+            prediv: PllPreDiv::DIV1,
+            mul: PllMul::MUL10,
+            divp: None,
+            divq: None,
+            divr: Some(PllDiv::DIV1),
+        });
+        config.rcc.sys = Sysclk::PLL1_R;
+        config.rcc.voltage_range = VoltageScale::RANGE1;
+        config.rcc.hsi48 = Some(Hsi48Config { sync_from_usb: true });
+        config.rcc.mux.iclksel = mux::Iclksel::HSI48;
+    }
+
+    let p = embassy_stm32::init(config);
+
+    let mut mux_select = Output::new(p.PI7, Level::Low, Speed::Low);
+    let mut i2c_config = I2cConfig::default();
+    i2c_config.frequency = Hertz::khz(100);
+    let mut i2c = I2c::new_blocking(p.I2C1, p.PB6, p.PB7, i2c_config);
+
+    let mut ep_out_buffer = [0u8; 256];
+    let mut driver_config = embassy_stm32::usb::Config::default();
+    driver_config.vbus_detection = false;
+    let driver = Driver::new_fs(p.USB_OTG_FS, Irqs, p.PA12, p.PA11, &mut ep_out_buffer, driver_config);
+
+    let mut usb_config = embassy_usb::Config::new(0x0483, 0x5740);
+    usb_config.manufacturer = Some("ST + Rust");
+    usb_config.product = Some("MKBOXPRO IMU Console");
+    usb_config.serial_number = Some("mkboxpro-imu");
+
+    let mut config_descriptor = [0u8; 256];
+    let mut bos_descriptor = [0u8; 256];
+    let mut control_buf = [0u8; 64];
+    let mut state = State::new();
+
+    let mut builder = Builder::new(
+        driver,
+        usb_config,
+        &mut config_descriptor,
+        &mut bos_descriptor,
+        &mut [],
+        &mut control_buf,
+    );
+
+    let mut class = CdcAcmClass::new(&mut builder, &mut state, 64);
+    let mut usb = builder.build();
+
+    let usb_fut = usb.run();
+    let app_fut = async {
+        loop {
+            class.wait_connection().await;
+            let _ = run_console(&mut class, &mut i2c, &mut mux_select).await;
+        }
+    };
+
+    join(usb_fut, app_fut).await;
+}
+
+async fn run_console<'d, T: Instance + 'd>(
+    class: &mut CdcAcmClass<'d, Driver<'d, T>>,
+    i2c: &mut I2c<'_, Blocking, Master>,
+    mux_select: &mut Output<'_>,
+) -> Result<(), Disconnected> {
+    write_line(class, "MKBOXPRO USB CDC online").await?;
+
+    loop {
+        let probe = match probe_sensor(i2c, mux_select).await {
+            Some(probe) => probe,
+            None => {
+                write_line(class, "probe failed: no supported IMU found on 0x6A/0x6B").await?;
+                Timer::after_millis(1000).await;
+                continue;
+            }
+        };
+
+        let mut info: String<96> = String::new();
+        write!(
+            &mut info,
+            "imu={} addr=0x{:02X} mux={}",
+            probe.sensor.name(),
+            probe.address,
+            if probe.mux_high { "high" } else { "low" }
+        )
+        .unwrap();
+        write_line(class, &info).await?;
+
+        if let Err(err) = configure_sensor(i2c, probe).await {
+            let mut line: String<96> = String::new();
+            write!(&mut line, "configure failed: {:?}", err).unwrap();
+            write_line(class, &line).await?;
+            Timer::after_millis(1000).await;
+            continue;
+        }
+
+        write_line(class, "calibrating: keep the board still for ~3s").await?;
+        let bias = match calibrate_bias(i2c, probe).await {
+            Ok(bias) => bias,
+            Err(err) => {
+                let mut line: String<96> = String::new();
+                write!(&mut line, "calibration failed: {:?}", err).unwrap();
+                write_line(class, &line).await?;
+                Timer::after_millis(1000).await;
+                continue;
+            }
+        };
+
+        write_line(class, "streaming: acc is bias-corrected, velocity is integrated drift-prone").await?;
+
+        let mut velocity = [0.0f32; 3];
+        let mut last_sample = Instant::now();
+
+        loop {
+            Timer::after_millis(STREAM_INTERVAL_MS).await;
+
+            let now = Instant::now();
+            let dt = (now.as_micros() - last_sample.as_micros()) as f32 * 1e-6;
+            last_sample = now;
+
+            let raw_acc = match read_acceleration(i2c, probe) {
+                Ok(values) => values,
+                Err(err) => {
+                    let mut line: String<96> = String::new();
+                    write!(&mut line, "read failed: {:?}; reprobing", err).unwrap();
+                    write_line(class, &line).await?;
+                    break;
+                }
+            };
+
+            let acc = [
+                raw_acc[0] - bias[0],
+                raw_acc[1] - bias[1],
+                raw_acc[2] - bias[2],
+            ];
+
+            velocity[0] += acc[0] * dt;
+            velocity[1] += acc[1] * dt;
+            velocity[2] += acc[2] * dt;
+
+            let mut line: String<160> = String::new();
+            line.push_str("acc=[").unwrap();
+            push_fixed3(&mut line, acc[0]);
+            line.push(',').unwrap();
+            push_fixed3(&mut line, acc[1]);
+            line.push(',').unwrap();
+            push_fixed3(&mut line, acc[2]);
+            line.push_str("] velocity=[").unwrap();
+            push_fixed3(&mut line, velocity[0]);
+            line.push(',').unwrap();
+            push_fixed3(&mut line, velocity[1]);
+            line.push(',').unwrap();
+            push_fixed3(&mut line, velocity[2]);
+            line.push_str("]").unwrap();
+
+            write_line(class, &line).await?;
+        }
+    }
+}
+
+async fn probe_sensor(
+    i2c: &mut I2c<'_, Blocking, Master>,
+    mux_select: &mut Output<'_>,
+) -> Option<ProbeResult> {
+    for mux_high in [false, true] {
+        mux_select.set_level(if mux_high { Level::High } else { Level::Low });
+        Timer::after_millis(10).await;
+
+        for address in [0x6A, 0x6B] {
+            if let Ok(value) = read_reg(i2c, address, WHO_AM_I_REG) {
+                for sensor in [SensorKind::Lsm6dsv16x, SensorKind::Lsm6dso16is] {
+                    if value == sensor.expected_whoami() {
+                        return Some(ProbeResult {
+                            sensor,
+                            address,
+                            mux_high,
+                        });
+                    }
+                }
+            }
+        }
+    }
+
+    None
+}
+
+async fn configure_sensor(i2c: &mut I2c<'_, Blocking, Master>, probe: ProbeResult) -> Result<(), I2cError> {
+    write_reg(i2c, probe.address, 0x12, 0x01)?;
+    Timer::after_millis(20).await;
+
+    match probe.sensor {
+        SensorKind::Lsm6dsv16x => {
+            write_reg(i2c, probe.address, 0x12, 0x44)?;
+            write_reg(i2c, probe.address, 0x11, 0x00)?;
+            write_reg(i2c, probe.address, 0x17, 0x00)?;
+            write_reg(i2c, probe.address, 0x10, 0x05)?;
+        }
+        SensorKind::Lsm6dso16is => {
+            write_reg(i2c, probe.address, 0x12, 0x44)?;
+            write_reg(i2c, probe.address, 0x11, 0x00)?;
+            write_reg(i2c, probe.address, 0x10, 0x30)?;
+        }
+    }
+
+    Timer::after_millis(100).await;
+    Ok(())
+}
+
+async fn calibrate_bias(
+    i2c: &mut I2c<'_, Blocking, Master>,
+    probe: ProbeResult,
+) -> Result<[f32; 3], I2cError> {
+    let mut sum = [0.0f32; 3];
+
+    for _ in 0..CALIBRATION_SAMPLES {
+        let sample = read_acceleration(i2c, probe)?;
+        sum[0] += sample[0];
+        sum[1] += sample[1];
+        sum[2] += sample[2];
+        Timer::after_millis(STREAM_INTERVAL_MS).await;
+    }
+
+    Ok([
+        sum[0] / CALIBRATION_SAMPLES as f32,
+        sum[1] / CALIBRATION_SAMPLES as f32,
+        sum[2] / CALIBRATION_SAMPLES as f32,
+    ])
+}
+
+fn read_acceleration(
+    i2c: &mut I2c<'_, Blocking, Master>,
+    probe: ProbeResult,
+) -> Result<[f32; 3], I2cError> {
+    let mut data = [0u8; 6];
+    i2c.blocking_write_read(probe.address, &[ACC_OUT_START_REG], &mut data)?;
+
+    let raw_x = i16::from_le_bytes([data[0], data[1]]);
+    let raw_y = i16::from_le_bytes([data[2], data[3]]);
+    let raw_z = i16::from_le_bytes([data[4], data[5]]);
+
+    Ok([
+        raw_x as f32 * ACC_SCALE_M_S2_PER_LSB,
+        raw_y as f32 * ACC_SCALE_M_S2_PER_LSB,
+        raw_z as f32 * ACC_SCALE_M_S2_PER_LSB,
+    ])
+}
+
+fn read_reg(i2c: &mut I2c<'_, Blocking, Master>, address: u8, reg: u8) -> Result<u8, I2cError> {
+    let mut value = [0u8; 1];
+    i2c.blocking_write_read(address, &[reg], &mut value)?;
+    Ok(value[0])
+}
+
+fn write_reg(i2c: &mut I2c<'_, Blocking, Master>, address: u8, reg: u8, value: u8) -> Result<(), I2cError> {
+    i2c.blocking_write(address, &[reg, value])
+}
+
+fn push_fixed3<const N: usize>(buf: &mut String<N>, value: f32) {
+    let scaled_f = value * 1000.0;
+    let scaled = if scaled_f >= 0.0 {
+        (scaled_f + 0.5) as i32
+    } else {
+        (scaled_f - 0.5) as i32
+    };
+    let sign = if scaled < 0 { "-" } else { "" };
+    let abs = scaled.abs();
+    write!(buf, "{}{}.{:03}", sign, abs / 1000, abs % 1000).unwrap();
+}
+
+async fn write_line<'d, T: Instance + 'd>(
+    class: &mut CdcAcmClass<'d, Driver<'d, T>>,
+    line: &str,
+) -> Result<(), Disconnected> {
+    write_all(class, line.as_bytes()).await?;
+    write_all(class, b"\r\n").await
+}
+
+async fn write_all<'d, T: Instance + 'd>(
+    class: &mut CdcAcmClass<'d, Driver<'d, T>>,
+    data: &[u8],
+) -> Result<(), Disconnected> {
+    for chunk in data.chunks(64) {
+        class.write_packet(chunk).await?;
+    }
+    Ok(())
+}
+
+struct Disconnected;
+
+impl From<EndpointError> for Disconnected {
+    fn from(error: EndpointError) -> Self {
+        match error {
+            EndpointError::BufferOverflow => panic!("USB endpoint buffer overflow"),
+            EndpointError::Disabled => Self,
+        }
+    }
+}
