@@ -1,5 +1,18 @@
 # ECE398 Midterm - IMU Dataset Record
 
+## Requirements
+
+- Rust toolchain with `rustup`
+- Rust target: `thumbv8m.main-none-eabihf`
+- Rust component: `llvm-tools-preview`
+- `dfu-util` for flashing over STM32 USB DFU
+- macOS host tools: `stty` for `cargo monitor`
+
+```bash
+rustup target add thumbv8m.main-none-eabihf
+rustup component add llvm-tools-preview
+```
+
 ## Flash
 
 ```markdown
