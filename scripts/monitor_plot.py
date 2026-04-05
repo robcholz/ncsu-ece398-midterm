@@ -31,6 +31,8 @@ TEXT = "#d9e2f2"
 MUTED = "#7f8da3"
 ACC_COLORS = ("#ff6b6b", "#ff922b", "#ffd43b")
 VEL_COLORS = ("#4dabf7", "#22b8cf", "#69db7c")
+LABEL_SHADE = "#7cfc9a"
+LABEL_SHADE_STIPPLE = "gray25"
 
 
 @dataclass
@@ -38,6 +40,7 @@ class Sample:
     timestamp: float
     acceleration: tuple[float, float, float]
     velocity: tuple[float, float, float]
+    label: int = 0
 
 
 class MonitorReader(threading.Thread):
@@ -125,6 +128,7 @@ class MonitorReader(threading.Thread):
             timestamp=now - self.first_sample_time,
             acceleration=acceleration,
             velocity=velocity,
+            label=0,
         )
 
     @staticmethod
@@ -211,6 +215,7 @@ class CsvReader(threading.Thread):
                         parse_csv_float(row, "vel_y", row_number),
                         parse_csv_float(row, "vel_z", row_number),
                     ),
+                    label=parse_csv_label(row, row_number),
                 )
                 self.output_queue.put(("sample", sample))
                 samples_loaded += 1
@@ -228,6 +233,7 @@ class LivePlotApp:
         self.timestamps: deque[float] = deque(maxlen=history_size)
         self.acceleration = [deque(maxlen=history_size) for _ in range(3)]
         self.velocity = [deque(maxlen=history_size) for _ in range(3)]
+        self.labels: deque[int] = deque(maxlen=history_size)
         self.samples_seen = 0
         self.last_status = f"waiting for samples from {self.reader.source_name}"
         self.last_exit_code: int | None = None
@@ -294,6 +300,7 @@ class LivePlotApp:
             self.acceleration[axis].append(value)
         for axis, value in enumerate(sample.velocity):
             self.velocity[axis].append(value)
+        self.labels.append(sample.label)
         self.samples_seen += 1
 
     def _build_status_text(self) -> str:
@@ -378,11 +385,11 @@ class LivePlotApp:
         plot_height = plot_bottom - plot_top
 
         scale = self._compute_scale(series)
-        self._draw_grid(plot_left, plot_top, plot_right, plot_bottom, scale)
-
         start_time = self.timestamps[0]
         end_time = self.timestamps[-1]
         span = max(end_time - start_time, 1e-6)
+        self._draw_label_regions(plot_left, plot_top, plot_right, plot_bottom, start_time, span)
+        self._draw_grid(plot_left, plot_top, plot_right, plot_bottom, scale)
 
         for label, values, color in zip(axis_labels, series, colors):
             points: list[float] = []
@@ -412,6 +419,26 @@ class LivePlotApp:
                 anchor="e",
                 text=f"{label} {latest_value:+.3f}",
                 fill=color,
+                font=("Menlo", 12),
+            )
+
+        if any(self.labels):
+            legend_y = y0 + 18 + len(axis_labels) * 18
+            self.canvas.create_rectangle(
+                plot_right - 84,
+                legend_y - 8,
+                plot_right - 70,
+                legend_y + 6,
+                fill=LABEL_SHADE,
+                outline="",
+                stipple=LABEL_SHADE_STIPPLE,
+            )
+            self.canvas.create_text(
+                plot_right - 8,
+                legend_y,
+                anchor="e",
+                text="flag",
+                fill=MUTED,
                 font=("Menlo", 12),
             )
 
@@ -453,6 +480,69 @@ class LivePlotApp:
                 fill=MUTED,
                 font=("Menlo", 11),
             )
+
+    def _draw_label_regions(
+        self,
+        plot_left: float,
+        plot_top: float,
+        plot_right: float,
+        plot_bottom: float,
+        start_time: float,
+        span: float,
+    ) -> None:
+        timestamps = list(self.timestamps)
+        labels = list(self.labels)
+        if len(timestamps) < 2 or not any(labels):
+            return
+
+        for region_start, region_end in self._compute_labeled_regions(timestamps, labels):
+            x0 = plot_left + ((region_start - start_time) / span) * (plot_right - plot_left)
+            x1 = plot_left + ((region_end - start_time) / span) * (plot_right - plot_left)
+            self.canvas.create_rectangle(
+                x0,
+                plot_top,
+                x1,
+                plot_bottom,
+                fill=LABEL_SHADE,
+                outline="",
+                stipple=LABEL_SHADE_STIPPLE,
+            )
+
+    @staticmethod
+    def _compute_labeled_regions(timestamps: list[float], labels: list[int]) -> list[tuple[float, float]]:
+        if len(timestamps) != len(labels) or len(timestamps) < 2:
+            return []
+
+        boundaries: list[tuple[float, float]] = []
+        end_time = timestamps[-1]
+
+        for index, (timestamp, label) in enumerate(zip(timestamps, labels)):
+            if label != 1:
+                continue
+
+            if index == 0:
+                left = timestamps[0]
+            else:
+                left = (timestamps[index - 1] + timestamp) / 2.0
+
+            if index == len(timestamps) - 1:
+                right = end_time
+            else:
+                right = (timestamp + timestamps[index + 1]) / 2.0
+
+            boundaries.append((left, right))
+
+        if not boundaries:
+            return []
+
+        merged = [boundaries[0]]
+        for left, right in boundaries[1:]:
+            previous_left, previous_right = merged[-1]
+            if left <= previous_right:
+                merged[-1] = (previous_left, max(previous_right, right))
+            else:
+                merged.append((left, right))
+        return merged
 
     @staticmethod
     def _compute_scale(series: list[deque[float]]) -> float:
@@ -520,6 +610,23 @@ def parse_csv_float(row: dict[str, str | None], field: str, row_number: int) -> 
         return float(raw_text)
     except (TypeError, ValueError) as exc:
         raise ValueError(f"row {row_number}: invalid {field} value {raw_text!r}") from exc
+
+
+def parse_csv_label(row: dict[str, str | None], row_number: int) -> int:
+    raw = row.get("label", "")
+    raw_text = "" if raw is None else raw.strip()
+    if raw_text == "":
+        return 0
+
+    try:
+        label = int(raw_text)
+    except ValueError as exc:
+        raise ValueError(f"row {row_number}: invalid label value {raw_text!r}") from exc
+
+    if label not in (0, 1):
+        raise ValueError(f"row {row_number}: label must be 0 or 1, got {raw_text!r}")
+
+    return label
 
 
 def main() -> int:
