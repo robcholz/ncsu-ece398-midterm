@@ -11,3 +11,10 @@ notes = [
   "No third-party Python dependencies are required.",
   "The visualizer uses only the standard library, including tkinter.",
 ]
+
+[tool.monitor-record]
+entrypoint = "scripts/monitor_record.py"
+notes = [
+  "Writes CSV rows with host-side UTC timestamps and 0/1 labels.",
+  "Type 1<Enter> to start a labeled region, 0<Enter> to stop it, and q<Enter> to finish recording.",
+]

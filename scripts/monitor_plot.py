@@ -8,8 +8,10 @@ tkinter Canvas rather than using a third-party plotting package.
 from __future__ import annotations
 
 import argparse
+import csv
 from collections import deque
 from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
 import queue
 import re
@@ -47,6 +49,8 @@ class MonitorReader(threading.Thread):
     ) -> None:
         super().__init__(daemon=True)
         self.command = command
+        self.source_name = "cargo monitor"
+        self.replace_status_on_success_exit = True
         self.workdir = workdir
         self.output_queue = output_queue
         self.stop_event = threading.Event()
@@ -135,8 +139,87 @@ class MonitorReader(threading.Thread):
             return None
 
 
+class CsvReader(threading.Thread):
+    VALUE_FIELDS = ("acc_x", "acc_y", "acc_z", "vel_x", "vel_y", "vel_z")
+    TIMESTAMP_FIELDS = ("timestamp", "timestamp_utc")
+
+    def __init__(self, csv_path: Path, output_queue: queue.Queue[tuple[str, object]]) -> None:
+        super().__init__(daemon=True)
+        self.csv_path = csv_path
+        self.output_queue = output_queue
+        self.stop_event = threading.Event()
+        self.command = ["csv", str(csv_path)]
+        self.source_name = "CSV loader"
+        self.replace_status_on_success_exit = False
+
+    def run(self) -> None:
+        try:
+            samples_loaded = self._load_csv()
+        except (OSError, ValueError, csv.Error) as exc:
+            self.output_queue.put(("error", f"failed to load CSV {self.csv_path}: {exc}"))
+            self.output_queue.put(("exit", 1))
+            return
+
+        if not self.stop_event.is_set():
+            self.output_queue.put(("status", f"loaded {samples_loaded} samples from {self.csv_path}"))
+            self.output_queue.put(("exit", 0))
+
+    def stop(self) -> None:
+        self.stop_event.set()
+
+    def _load_csv(self) -> int:
+        with self.csv_path.open("r", newline="", encoding="utf-8") as csv_file:
+            reader = csv.DictReader(csv_file)
+            if reader.fieldnames is None:
+                raise ValueError("missing CSV header row")
+
+            missing_fields = [field for field in self.VALUE_FIELDS if field not in reader.fieldnames]
+            if missing_fields:
+                raise ValueError(f"missing required columns: {', '.join(missing_fields)}")
+
+            timestamp_field = next((field for field in self.TIMESTAMP_FIELDS if field in reader.fieldnames), None)
+            if timestamp_field is None:
+                raise ValueError(
+                    "missing required timestamp column: expected one of "
+                    f"{', '.join(self.TIMESTAMP_FIELDS)}"
+                )
+
+            samples_loaded = 0
+            first_sample_time: datetime | None = None
+
+            for row_number, row in enumerate(reader, start=2):
+                if self.stop_event.is_set():
+                    break
+
+                if timestamp_field == "timestamp":
+                    sample_timestamp = parse_relative_timestamp_ms(row["timestamp"], row_number) / 1_000.0
+                else:
+                    sample_time = parse_utc_timestamp(row["timestamp_utc"], row_number)
+                    if first_sample_time is None:
+                        first_sample_time = sample_time
+                    sample_timestamp = (sample_time - first_sample_time).total_seconds()
+
+                sample = Sample(
+                    timestamp=sample_timestamp,
+                    acceleration=(
+                        parse_csv_float(row, "acc_x", row_number),
+                        parse_csv_float(row, "acc_y", row_number),
+                        parse_csv_float(row, "acc_z", row_number),
+                    ),
+                    velocity=(
+                        parse_csv_float(row, "vel_x", row_number),
+                        parse_csv_float(row, "vel_y", row_number),
+                        parse_csv_float(row, "vel_z", row_number),
+                    ),
+                )
+                self.output_queue.put(("sample", sample))
+                samples_loaded += 1
+
+        return samples_loaded
+
+
 class LivePlotApp:
-    def __init__(self, reader: MonitorReader, history_size: int, refresh_ms: int) -> None:
+    def __init__(self, reader: MonitorReader | CsvReader, history_size: int, refresh_ms: int) -> None:
         self.reader = reader
         self.history_size = history_size
         self.refresh_ms = refresh_ms
@@ -146,7 +229,7 @@ class LivePlotApp:
         self.acceleration = [deque(maxlen=history_size) for _ in range(3)]
         self.velocity = [deque(maxlen=history_size) for _ in range(3)]
         self.samples_seen = 0
-        self.last_status = "waiting for samples from cargo monitor"
+        self.last_status = f"waiting for samples from {self.reader.source_name}"
         self.last_exit_code: int | None = None
 
         self.root = tk.Tk()
@@ -194,7 +277,8 @@ class LivePlotApp:
                 self.last_status = str(payload)
             elif kind == "exit":
                 self.last_exit_code = int(payload)
-                self.last_status = f"cargo monitor exited with code {self.last_exit_code}"
+                if self.last_exit_code != 0 or self.reader.replace_status_on_success_exit:
+                    self.last_status = f"{self.reader.source_name} exited with code {self.last_exit_code}"
 
         self.status_var.set(self._build_status_text())
         self.redraw()
@@ -390,6 +474,10 @@ def parse_args() -> argparse.Namespace:
         help="command to launch the serial monitor (default: %(default)s)",
     )
     parser.add_argument(
+        "--csv",
+        help="load samples from a CSV file instead of launching the monitor command",
+    )
+    parser.add_argument(
         "--cwd",
         default=str(repo_root),
         help="working directory for the monitor command (default: repository root)",
@@ -409,15 +497,49 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def parse_utc_timestamp(raw: str, row_number: int) -> datetime:
+    raw_text = "" if raw is None else raw
+    try:
+        return datetime.fromisoformat(raw_text.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise ValueError(f"row {row_number}: invalid timestamp_utc {raw_text!r}") from exc
+
+
+def parse_relative_timestamp_ms(raw: str, row_number: int) -> float:
+    raw_text = "" if raw is None else raw
+    try:
+        return float(raw_text)
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"row {row_number}: invalid timestamp value {raw_text!r}") from exc
+
+
+def parse_csv_float(row: dict[str, str | None], field: str, row_number: int) -> float:
+    raw = row.get(field, "")
+    raw_text = "" if raw is None else raw
+    try:
+        return float(raw_text)
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"row {row_number}: invalid {field} value {raw_text!r}") from exc
+
+
 def main() -> int:
     args = parse_args()
-    command = shlex.split(args.command)
-    if not command:
-        print("error: --command must not be empty", file=sys.stderr)
-        return 2
 
     reader_queue: queue.Queue[tuple[str, object]] = queue.Queue()
-    reader = MonitorReader(command=command, workdir=Path(args.cwd), output_queue=reader_queue)
+    workdir = Path(args.cwd)
+
+    if args.csv:
+        csv_path = Path(args.csv).expanduser()
+        if not csv_path.is_absolute():
+            csv_path = workdir / csv_path
+        reader = CsvReader(csv_path=csv_path.resolve(), output_queue=reader_queue)
+    else:
+        command = shlex.split(args.command)
+        if not command:
+            print("error: --command must not be empty", file=sys.stderr)
+            return 2
+        reader = MonitorReader(command=command, workdir=workdir, output_queue=reader_queue)
+
     app = LivePlotApp(reader=reader, history_size=max(10, args.history), refresh_ms=max(10, args.refresh_ms))
 
     try:

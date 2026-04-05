@@ -6,7 +6,7 @@ The firmware currently streams samples as lines shaped like:
     acc=[ax,ay,az] velocity=[vx,vy,vz]
 
 This recorder launches the monitor command, parses those lines, and writes CSV
-rows with a host-side UTC timestamp plus a live binary label.
+rows with a host-side relative timestamp in milliseconds plus a live binary label.
 
 Interactive controls:
     1 + Enter    start a labeled region
@@ -36,7 +36,7 @@ DATA_LINE_RE = re.compile(r"acc=\[(?P<acc>[^\]]+)\]\s+velocity=\[(?P<vel>[^\]]+)
 
 @dataclass(frozen=True)
 class Sample:
-    timestamp_ns: int
+    timestamp_ms: int
     acceleration: tuple[float, float, float]
     velocity: tuple[float, float, float]
 
@@ -44,7 +44,7 @@ class Sample:
 class LabelTimeline:
     def __init__(self) -> None:
         self._lock = threading.Lock()
-        self._change_times_ns = [0]
+        self._change_times_ms = [0]
         self._change_values = [0]
         self._stop_event = threading.Event()
 
@@ -52,17 +52,17 @@ class LabelTimeline:
         if value not in (0, 1):
             raise ValueError(f"label must be 0 or 1, got {value}")
 
-        now_ns = time.time_ns()
+        now_ms = monotonic_ms()
         with self._lock:
             if self._change_values[-1] == value:
-                return False, now_ns
-            self._change_times_ns.append(now_ns)
+                return False, now_ms
+            self._change_times_ms.append(now_ms)
             self._change_values.append(value)
-            return True, now_ns
+            return True, now_ms
 
-    def label_for(self, timestamp_ns: int) -> int:
+    def label_for(self, timestamp_ms: int) -> int:
         with self._lock:
-            index = bisect_right(self._change_times_ns, timestamp_ns) - 1
+            index = bisect_right(self._change_times_ms, timestamp_ms) - 1
             return self._change_values[index]
 
     def current_label(self) -> int:
@@ -104,15 +104,15 @@ class ControlReader(threading.Thread):
                 continue
 
             if command in {"1", "start", "on"}:
-                changed, at_ns = self.timeline.set_label(1)
+                changed, at_ms = self.timeline.set_label(1)
                 state = "started" if changed else "already active"
-                self._write_line(f"label=1 {state} at {format_utc_ns(at_ns)}")
+                self._write_line(f"label=1 {state} at {format_monotonic_ms(at_ms)}")
                 continue
 
             if command in {"0", "stop", "off"}:
-                changed, at_ns = self.timeline.set_label(0)
+                changed, at_ms = self.timeline.set_label(0)
                 state = "stopped" if changed else "already inactive"
-                self._write_line(f"label=0 {state} at {format_utc_ns(at_ns)}")
+                self._write_line(f"label=0 {state} at {format_monotonic_ms(at_ms)}")
                 continue
 
             if command in {"q", "quit", "exit"}:
@@ -213,13 +213,14 @@ def main() -> int:
     print(f"monitor command: {' '.join(command)}", file=sys.stderr, flush=True)
 
     samples_written = 0
+    first_sample_ms: int | None = None
 
     try:
         with output_path.open("w", newline="", encoding="utf-8") as csv_file:
             writer = csv.writer(csv_file)
             writer.writerow(
                 [
-                    "timestamp_utc",
+                    "timestamp",
                     "acc_x",
                     "acc_y",
                     "acc_z",
@@ -243,10 +244,13 @@ def main() -> int:
                         break
                     continue
 
-                label = timeline.label_for(sample.timestamp_ns)
+                label = timeline.label_for(sample.timestamp_ms)
+                if first_sample_ms is None:
+                    first_sample_ms = sample.timestamp_ms
+
                 writer.writerow(
                     [
-                        format_utc_ns(sample.timestamp_ns),
+                        relative_timestamp_ms(sample.timestamp_ms, first_sample_ms),
                         sample.acceleration[0],
                         sample.acceleration[1],
                         sample.acceleration[2],
@@ -297,7 +301,7 @@ def parse_sample(line: str) -> Sample | None:
         return None
 
     return Sample(
-        timestamp_ns=time.time_ns(),
+        timestamp_ms=monotonic_ms(),
         acceleration=acceleration,
         velocity=velocity,
     )
@@ -325,9 +329,16 @@ def utc_filename_stamp() -> str:
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
 
-def format_utc_ns(timestamp_ns: int) -> str:
-    timestamp = datetime.fromtimestamp(timestamp_ns / 1_000_000_000, tz=timezone.utc)
-    return timestamp.isoformat(timespec="microseconds").replace("+00:00", "Z")
+def monotonic_ms() -> int:
+    return int(time.monotonic() * 1_000)
+
+
+def relative_timestamp_ms(timestamp_ms: int, start_ms: int) -> int:
+    return max(0, timestamp_ms - start_ms)
+
+
+def format_monotonic_ms(timestamp_ms: int) -> str:
+    return f"{timestamp_ms} ms"
 
 
 def slugify_filename(raw: str) -> str:
