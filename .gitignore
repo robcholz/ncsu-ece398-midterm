@@ -1,3 +1,11 @@
-target/
 .DS_Store
+
+# rust
+target/
+
+# python
 __pycache__/
+.venv/
+
+# uv
+.ruff_cache/
