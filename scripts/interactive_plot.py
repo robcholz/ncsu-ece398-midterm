@@ -27,6 +27,7 @@ class ImuData:
     timestamp: list[float]
     acc: list[tuple[float, float, float]]
     vel: list[tuple[float, float, float]]
+    vel_std: list[tuple[float, float, float]] | None
     label: list[int]
 
 
@@ -112,6 +113,11 @@ def load_csv(csv_path: Path) -> ImuData:
         acc: list[tuple[float, float, float]] = []
         vel: list[tuple[float, float, float]] = []
         labels: list[int] = []
+        vel_std: list[tuple[float, float, float]] = []
+        has_vel_std_columns = all(
+            field in reader.fieldnames
+            for field in ("vel_std_x", "vel_std_y", "vel_std_z")
+        )
 
         first_sample_time: datetime | None = None
 
@@ -141,14 +147,30 @@ def load_csv(csv_path: Path) -> ImuData:
                     parse_csv_float(row, "vel_z", row_number),
                 )
             )
+            if has_vel_std_columns:
+                vel_std.append(
+                    (
+                        parse_csv_float(row, "vel_std_x", row_number),
+                        parse_csv_float(row, "vel_std_y", row_number),
+                        parse_csv_float(row, "vel_std_z", row_number),
+                    )
+                )
             labels.append(parse_csv_label(row, row_number))
 
-    return ImuData(timestamp=timestamps, acc=acc, vel=vel, label=labels)
+    return ImuData(
+        timestamp=timestamps,
+        acc=acc,
+        vel=vel,
+        vel_std=vel_std if has_vel_std_columns else None,
+        label=labels,
+    )
 
 
 def parse_csv_metadata(csv_path: Path) -> CsvMeta:
     test_type = csv_path.parent.name
     stem = csv_path.stem
+    if stem.endswith("_vel_std"):
+        stem = stem[: -len("_vel_std")]
     subject = ""
     location = ""
     if "_" in stem:
@@ -168,7 +190,31 @@ def build_title(meta: CsvMeta) -> str:
     return " | ".join(safe) if safe else "IMU Plot"
 
 
-def export_png(csv_path: Path, output_dir: Path | None = None) -> Path:
+def get_series_data(
+    data: ImuData, series_name: str
+) -> tuple[list[float], list[float], list[float]]:
+    if series_name == "acc":
+        rows = data.acc
+    elif series_name == "vel":
+        rows = data.vel
+    elif series_name == "vel_std":
+        if data.vel_std is None:
+            raise ValueError(
+                "CSV does not contain vel_std_x/vel_std_y/vel_std_z columns"
+            )
+        rows = data.vel_std
+    else:
+        raise ValueError(f"unsupported series: {series_name}")
+
+    xs = [row[0] for row in rows]
+    ys = [row[1] for row in rows]
+    zs = [row[2] for row in rows]
+    return xs, ys, zs
+
+
+def export_png(
+    csv_path: Path, output_dir: Path | None = None, series_name: str = "acc"
+) -> Path:
     matplotlib.use("Agg")
     from matplotlib.figure import Figure
 
@@ -177,9 +223,7 @@ def export_png(csv_path: Path, output_dir: Path | None = None) -> Path:
     title = build_title(meta)
 
     times = data.timestamp
-    xs = [row[0] for row in data.acc]
-    ys = [row[1] for row in data.acc]
-    zs = [row[2] for row in data.acc]
+    xs, ys, zs = get_series_data(data, series_name)
 
     fig = Figure(figsize=(8, 5), dpi=150)
     ax = fig.add_subplot(111)
@@ -193,15 +237,15 @@ def export_png(csv_path: Path, output_dir: Path | None = None) -> Path:
 
     ax.set_title(title)
     ax.set_xlabel("time (s)")
-    ax.set_ylabel("acc")
+    ax.set_ylabel(series_name)
     ax.grid(True, alpha=0.25)
     ax.legend(loc="upper right")
 
     if output_dir is None:
         output_dir = Path(__file__).resolve().parents[1] / "screenshots"
 
-    filename = "_".join([meta.test_type, meta.subject, meta.location, "acc"]) + ".png"
-    output_path = output_dir / filename
+    filename = "_".join([meta.subject, meta.location, series_name]) + ".png"
+    output_path = output_dir / meta.test_type / filename
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(output_path, dpi=200, bbox_inches="tight")
     return output_path
@@ -253,7 +297,11 @@ class InteractivePlot:
     }
 
     def __init__(
-        self, csv_files: list[Path], title: str, output_dir: Path | None
+        self,
+        csv_files: list[Path],
+        title: str,
+        output_dir: Path | None,
+        series_name: str,
     ) -> None:
         if not csv_files:
             raise ValueError("no CSV files provided")
@@ -268,7 +316,7 @@ class InteractivePlot:
         self.root.title("IMU Interactive Plot")
         self.root.geometry("1280x820")
 
-        self.series_var = tk.StringVar(value="acc")
+        self.series_var = tk.StringVar(value=series_name)
         self.show_x = tk.BooleanVar(value=True)
         self.show_y = tk.BooleanVar(value=True)
         self.show_z = tk.BooleanVar(value=True)
@@ -294,6 +342,14 @@ class InteractivePlot:
         ttk.Checkbutton(
             toolbar, text="Z", variable=self.show_z, command=self._draw_plot
         ).pack(side="left")
+        for value, label in (("acc", "Acc"), ("vel", "Vel"), ("vel_std", "Vel Std")):
+            ttk.Radiobutton(
+                toolbar,
+                text=label,
+                value=value,
+                variable=self.series_var,
+                command=self._draw_plot,
+            ).pack(side="left", padx=(8, 0))
 
         ttk.Button(
             toolbar, text="Reset View", command=lambda: self._draw_plot(reset_view=True)
@@ -325,11 +381,7 @@ class InteractivePlot:
         self.canvas.mpl_connect("key_press_event", self._on_key)
 
     def _current_series(self) -> tuple[list[float], list[float], list[float]]:
-        series = self.data.acc
-        xs = [row[0] for row in series]
-        ys = [row[1] for row in series]
-        zs = [row[2] for row in series]
-        return xs, ys, zs
+        return get_series_data(self.data, self.series_var.get())
 
     def _draw_plot(self, reset_view: bool = False) -> None:
         self.ax.clear()
@@ -348,7 +400,7 @@ class InteractivePlot:
 
         self.ax.set_title(self.title)
         self.ax.set_xlabel("time (s)")
-        self.ax.set_ylabel("acc")
+        self.ax.set_ylabel(self.series_var.get())
         self.ax.grid(True, alpha=0.25)
 
         if any([self.show_x.get(), self.show_y.get(), self.show_z.get()]):
@@ -426,7 +478,7 @@ class InteractivePlot:
 
     def _default_png_name(self) -> str:
         meta = parse_csv_metadata(self.csv_files[self.current_index])
-        parts = [meta.test_type, meta.subject, meta.location, "acc"]
+        parts = [meta.subject, meta.location, self.series_var.get()]
         safe = [part for part in parts if part]
         return "_".join(safe) + ".png"
 
@@ -452,7 +504,8 @@ class InteractivePlot:
             message=f"Export PNG for {self.csv_files[self.current_index].name} as {name}?",
         )
         if answer:
-            path = self._default_output_dir() / name
+            meta = parse_csv_metadata(self.csv_files[self.current_index])
+            path = self._default_output_dir() / meta.test_type / name
             self._save_png(path)
 
     def _next_file(self) -> None:
@@ -528,7 +581,18 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--batch", action="store_true", help="export PNGs without opening a window"
     )
+    parser.add_argument(
+        "--series",
+        choices=("acc", "vel", "vel_std"),
+        default="acc",
+        help="which series to plot/export (default: %(default)s)",
+    )
     return parser.parse_args()
+
+
+def discover_plot_csv_files(csv_dir: Path, recursive: bool) -> list[Path]:
+    iterator = csv_dir.rglob("*.csv") if recursive else csv_dir.glob("*.csv")
+    return sorted(path for path in iterator if not path.name.endswith("_vel_std.csv"))
 
 
 def main() -> int:
@@ -537,10 +601,7 @@ def main() -> int:
     csv_files: list[Path] = []
     if args.csv_dir:
         csv_dir = Path(args.csv_dir).expanduser().resolve()
-        if args.recursive:
-            csv_files = sorted(csv_dir.rglob("*.csv"))
-        else:
-            csv_files = sorted(csv_dir.glob("*.csv"))
+        csv_files = discover_plot_csv_files(csv_dir, recursive=args.recursive)
     elif args.csv:
         csv_files = [Path(args.csv).expanduser().resolve()]
 
@@ -554,9 +615,14 @@ def main() -> int:
     )
     if args.batch:
         for csv_path in csv_files:
-            export_png(csv_path, output_dir=output_dir)
+            export_png(csv_path, output_dir=output_dir, series_name=args.series)
     else:
-        app = InteractivePlot(csv_files=csv_files, title="", output_dir=output_dir)
+        app = InteractivePlot(
+            csv_files=csv_files,
+            title="",
+            output_dir=output_dir,
+            series_name=args.series,
+        )
         app.run()
     return 0
 
