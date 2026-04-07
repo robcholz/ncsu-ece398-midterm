@@ -284,7 +284,11 @@ def main() -> int:
     )
 
     if return_code not in (0, 128 + signal.SIGINT, -signal.SIGINT):
-        print(f"monitor command exited with code {return_code}", file=sys.stderr, flush=True)
+        print(
+            f"monitor command exited with code {return_code}",
+            file=sys.stderr,
+            flush=True,
+        )
         return return_code if return_code >= 0 else 1
 
     return 0
@@ -345,7 +349,9 @@ def slugify_filename(raw: str) -> str:
     cleaned = re.sub(r"[^A-Za-z0-9._-]+", "-", raw.strip())
     cleaned = cleaned.strip("-._")
     if not cleaned:
-        raise ValueError("custom name must contain at least one filename-safe character")
+        raise ValueError(
+            "custom name must contain at least one filename-safe character"
+        )
     return cleaned
 
 

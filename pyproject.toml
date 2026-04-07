@@ -3,7 +3,9 @@ name = "mkboxpro-imu-tools"
 version = "0.1.0"
 description = "Python utilities for visualizing MKBOXPRO IMU monitor output."
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+    "matplotlib>=3.10.8",
+]
 
 [tool.monitor-plot]
 entrypoint = "scripts/monitor_plot.py"

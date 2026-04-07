@@ -42,7 +42,9 @@ def parse_utc_timestamp(raw: str, row_number: int) -> datetime:
     try:
         return datetime.fromisoformat(raw_text.replace("Z", "+00:00"))
     except ValueError as exc:
-        raise ValueError(f"row {row_number}: invalid timestamp_utc {raw_text!r}") from exc
+        raise ValueError(
+            f"row {row_number}: invalid timestamp_utc {raw_text!r}"
+        ) from exc
 
 
 def parse_relative_timestamp_ms(raw: str, row_number: int) -> float:
@@ -50,7 +52,9 @@ def parse_relative_timestamp_ms(raw: str, row_number: int) -> float:
     try:
         return float(raw_text)
     except (TypeError, ValueError) as exc:
-        raise ValueError(f"row {row_number}: invalid timestamp value {raw_text!r}") from exc
+        raise ValueError(
+            f"row {row_number}: invalid timestamp value {raw_text!r}"
+        ) from exc
 
 
 def parse_csv_float(row: dict[str, str | None], field: str, row_number: int) -> float:
@@ -59,7 +63,9 @@ def parse_csv_float(row: dict[str, str | None], field: str, row_number: int) -> 
     try:
         return float(raw_text)
     except (TypeError, ValueError) as exc:
-        raise ValueError(f"row {row_number}: invalid {field} value {raw_text!r}") from exc
+        raise ValueError(
+            f"row {row_number}: invalid {field} value {raw_text!r}"
+        ) from exc
 
 
 def parse_csv_label(row: dict[str, str | None], row_number: int) -> int:
@@ -86,7 +92,9 @@ def load_csv(csv_path: Path) -> ImuData:
             raise ValueError("missing CSV header row")
 
         required_fields = {"acc_x", "acc_y", "acc_z", "vel_x", "vel_y", "vel_z"}
-        missing_fields = [field for field in required_fields if field not in reader.fieldnames]
+        missing_fields = [
+            field for field in required_fields if field not in reader.fieldnames
+        ]
         if missing_fields:
             raise ValueError(f"missing required columns: {', '.join(missing_fields)}")
 
@@ -96,7 +104,9 @@ def load_csv(csv_path: Path) -> ImuData:
                 timestamp_field = field
                 break
         if timestamp_field is None:
-            raise ValueError("missing required timestamp column: expected timestamp or timestamp_utc")
+            raise ValueError(
+                "missing required timestamp column: expected timestamp or timestamp_utc"
+            )
 
         timestamps: list[float] = []
         acc: list[tuple[float, float, float]] = []
@@ -107,7 +117,9 @@ def load_csv(csv_path: Path) -> ImuData:
 
         for row_number, row in enumerate(reader, start=2):
             if timestamp_field == "timestamp":
-                sample_timestamp = parse_relative_timestamp_ms(row["timestamp"], row_number) / 1_000.0
+                sample_timestamp = (
+                    parse_relative_timestamp_ms(row["timestamp"], row_number) / 1_000.0
+                )
             else:
                 sample_time = parse_utc_timestamp(row["timestamp_utc"], row_number)
                 if first_sample_time is None:
@@ -195,7 +207,9 @@ def export_png(csv_path: Path, output_dir: Path | None = None) -> Path:
     return output_path
 
 
-def compute_label_regions(timestamps: list[float], labels: list[int]) -> list[tuple[float, float]]:
+def compute_label_regions(
+    timestamps: list[float], labels: list[int]
+) -> list[tuple[float, float]]:
     if len(timestamps) != len(labels) or len(timestamps) < 2:
         return []
 
@@ -238,7 +252,9 @@ class InteractivePlot:
         "z": "#69db7c",
     }
 
-    def __init__(self, csv_files: list[Path], title: str, output_dir: Path | None) -> None:
+    def __init__(
+        self, csv_files: list[Path], title: str, output_dir: Path | None
+    ) -> None:
         if not csv_files:
             raise ValueError("no CSV files provided")
 
@@ -269,19 +285,33 @@ class InteractivePlot:
         toolbar = ttk.Frame(self.root)
         toolbar.pack(fill="x", padx=12, pady=8)
 
-        ttk.Checkbutton(toolbar, text="X", variable=self.show_x, command=self._draw_plot).pack(side="left")
-        ttk.Checkbutton(toolbar, text="Y", variable=self.show_y, command=self._draw_plot).pack(side="left")
-        ttk.Checkbutton(toolbar, text="Z", variable=self.show_z, command=self._draw_plot).pack(side="left")
+        ttk.Checkbutton(
+            toolbar, text="X", variable=self.show_x, command=self._draw_plot
+        ).pack(side="left")
+        ttk.Checkbutton(
+            toolbar, text="Y", variable=self.show_y, command=self._draw_plot
+        ).pack(side="left")
+        ttk.Checkbutton(
+            toolbar, text="Z", variable=self.show_z, command=self._draw_plot
+        ).pack(side="left")
 
-        ttk.Button(toolbar, text="Reset View", command=lambda: self._draw_plot(reset_view=True)).pack(
+        ttk.Button(
+            toolbar, text="Reset View", command=lambda: self._draw_plot(reset_view=True)
+        ).pack(side="right", padx=6)
+        ttk.Button(toolbar, text="Prev", command=self._prev_file).pack(
             side="right", padx=6
         )
-        ttk.Button(toolbar, text="Prev", command=self._prev_file).pack(side="right", padx=6)
-        ttk.Button(toolbar, text="Next", command=self._next_file).pack(side="right", padx=6)
-        ttk.Button(toolbar, text="Export PNG", command=self._export_png).pack(side="right")
+        ttk.Button(toolbar, text="Next", command=self._next_file).pack(
+            side="right", padx=6
+        )
+        ttk.Button(toolbar, text="Export PNG", command=self._export_png).pack(
+            side="right"
+        )
 
         self.file_var = tk.StringVar(value=self._file_status())
-        ttk.Label(self.root, textvariable=self.file_var).pack(anchor="w", padx=12, pady=(0, 6))
+        ttk.Label(self.root, textvariable=self.file_var).pack(
+            anchor="w", padx=12, pady=(0, 6)
+        )
 
         self.figure = Figure(figsize=(8, 5), dpi=100)
         self.ax = self.figure.add_subplot(111)
@@ -482,12 +512,22 @@ class InteractivePlot:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Interactive plotter for IMU CSV recordings.")
+    parser = argparse.ArgumentParser(
+        description="Interactive plotter for IMU CSV recordings."
+    )
     parser.add_argument("--csv", help="path to CSV file")
     parser.add_argument("--csv-dir", help="directory of CSV files to step through")
-    parser.add_argument("--recursive", action="store_true", help="scan for CSVs recursively under --csv-dir")
-    parser.add_argument("--out-dir", help="directory to save exported PNGs (default: CSV folder)")
-    parser.add_argument("--batch", action="store_true", help="export PNGs without opening a window")
+    parser.add_argument(
+        "--recursive",
+        action="store_true",
+        help="scan for CSVs recursively under --csv-dir",
+    )
+    parser.add_argument(
+        "--out-dir", help="directory to save exported PNGs (default: CSV folder)"
+    )
+    parser.add_argument(
+        "--batch", action="store_true", help="export PNGs without opening a window"
+    )
     return parser.parse_args()
 
 
@@ -507,7 +547,11 @@ def main() -> int:
     if not csv_files:
         raise ValueError("no CSV files provided; use --csv or --csv-dir")
 
-    output_dir = Path(args.out_dir).expanduser().resolve() if args.out_dir else repo_root / "screenshots"
+    output_dir = (
+        Path(args.out_dir).expanduser().resolve()
+        if args.out_dir
+        else repo_root / "screenshots"
+    )
     if args.batch:
         for csv_path in csv_files:
             export_png(csv_path, output_dir=output_dir)

@@ -2,6 +2,7 @@
 
 ## Requirements
 
+- Python toolchain for `uv`
 - Rust toolchain with `rustup`
 - Rust target: `thumbv8m.main-none-eabihf`
 - Rust component: `llvm-tools-preview`
@@ -22,7 +23,8 @@ cargo flash
 
 ## Record
 
-```python
-python scripts/monitor_record.py <event_name> --output-dir <output_dir>
-python scripts/monitor_plot.py --csv <path_to_data>
+```bash
+uv run scripts/monitor_record.py <event_name> --output-dir <output_dir>
+uv run scripts/monitor_plot.py --csv <path_to_data>
+uv run scripts/interactive_plot.py --csv <path_to_data>
 ```

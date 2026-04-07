@@ -71,7 +71,9 @@ class MonitorReader(threading.Thread):
                 bufsize=1,
             )
         except OSError as exc:
-            self.output_queue.put(("error", f"failed to launch {' '.join(self.command)}: {exc}"))
+            self.output_queue.put(
+                ("error", f"failed to launch {' '.join(self.command)}: {exc}")
+            )
             return
 
         assert self.process.stdout is not None
@@ -147,7 +149,9 @@ class CsvReader(threading.Thread):
     VALUE_FIELDS = ("acc_x", "acc_y", "acc_z", "vel_x", "vel_y", "vel_z")
     TIMESTAMP_FIELDS = ("timestamp", "timestamp_utc")
 
-    def __init__(self, csv_path: Path, output_queue: queue.Queue[tuple[str, object]]) -> None:
+    def __init__(
+        self, csv_path: Path, output_queue: queue.Queue[tuple[str, object]]
+    ) -> None:
         super().__init__(daemon=True)
         self.csv_path = csv_path
         self.output_queue = output_queue
@@ -160,12 +164,16 @@ class CsvReader(threading.Thread):
         try:
             samples_loaded = self._load_csv()
         except (OSError, ValueError, csv.Error) as exc:
-            self.output_queue.put(("error", f"failed to load CSV {self.csv_path}: {exc}"))
+            self.output_queue.put(
+                ("error", f"failed to load CSV {self.csv_path}: {exc}")
+            )
             self.output_queue.put(("exit", 1))
             return
 
         if not self.stop_event.is_set():
-            self.output_queue.put(("status", f"loaded {samples_loaded} samples from {self.csv_path}"))
+            self.output_queue.put(
+                ("status", f"loaded {samples_loaded} samples from {self.csv_path}")
+            )
             self.output_queue.put(("exit", 0))
 
     def stop(self) -> None:
@@ -177,11 +185,22 @@ class CsvReader(threading.Thread):
             if reader.fieldnames is None:
                 raise ValueError("missing CSV header row")
 
-            missing_fields = [field for field in self.VALUE_FIELDS if field not in reader.fieldnames]
+            missing_fields = [
+                field for field in self.VALUE_FIELDS if field not in reader.fieldnames
+            ]
             if missing_fields:
-                raise ValueError(f"missing required columns: {', '.join(missing_fields)}")
+                raise ValueError(
+                    f"missing required columns: {', '.join(missing_fields)}"
+                )
 
-            timestamp_field = next((field for field in self.TIMESTAMP_FIELDS if field in reader.fieldnames), None)
+            timestamp_field = next(
+                (
+                    field
+                    for field in self.TIMESTAMP_FIELDS
+                    if field in reader.fieldnames
+                ),
+                None,
+            )
             if timestamp_field is None:
                 raise ValueError(
                     "missing required timestamp column: expected one of "
@@ -196,7 +215,10 @@ class CsvReader(threading.Thread):
                     break
 
                 if timestamp_field == "timestamp":
-                    sample_timestamp = parse_relative_timestamp_ms(row["timestamp"], row_number) / 1_000.0
+                    sample_timestamp = (
+                        parse_relative_timestamp_ms(row["timestamp"], row_number)
+                        / 1_000.0
+                    )
                 else:
                     sample_time = parse_utc_timestamp(row["timestamp_utc"], row_number)
                     if first_sample_time is None:
@@ -224,7 +246,9 @@ class CsvReader(threading.Thread):
 
 
 class LivePlotApp:
-    def __init__(self, reader: MonitorReader | CsvReader, history_size: int, refresh_ms: int) -> None:
+    def __init__(
+        self, reader: MonitorReader | CsvReader, history_size: int, refresh_ms: int
+    ) -> None:
         self.reader = reader
         self.history_size = history_size
         self.refresh_ms = refresh_ms
@@ -283,7 +307,10 @@ class LivePlotApp:
                 self.last_status = str(payload)
             elif kind == "exit":
                 self.last_exit_code = int(payload)
-                if self.last_exit_code != 0 or self.reader.replace_status_on_success_exit:
+                if (
+                    self.last_exit_code != 0
+                    or self.reader.replace_status_on_success_exit
+                ):
                     self.last_status = f"{self.reader.source_name} exited with code {self.last_exit_code}"
 
         self.status_var.set(self._build_status_text())
@@ -357,7 +384,9 @@ class LivePlotApp:
         colors: tuple[str, str, str],
         axis_labels: tuple[str, str, str],
     ) -> None:
-        self.canvas.create_rectangle(x0, y0, x1, y1, fill=PANEL_BG, outline=GRID, width=1)
+        self.canvas.create_rectangle(
+            x0, y0, x1, y1, fill=PANEL_BG, outline=GRID, width=1
+        )
         self.canvas.create_text(
             x0 + 18,
             y0 + 18,
@@ -388,7 +417,9 @@ class LivePlotApp:
         start_time = self.timestamps[0]
         end_time = self.timestamps[-1]
         span = max(end_time - start_time, 1e-6)
-        self._draw_label_regions(plot_left, plot_top, plot_right, plot_bottom, start_time, span)
+        self._draw_label_regions(
+            plot_left, plot_top, plot_right, plot_bottom, start_time, span
+        )
         self._draw_grid(plot_left, plot_top, plot_right, plot_bottom, scale)
 
         for label, values, color in zip(axis_labels, series, colors):
@@ -459,7 +490,9 @@ class LivePlotApp:
             font=("Menlo", 11),
         )
 
-    def _draw_grid(self, left: float, top: float, right: float, bottom: float, scale: float) -> None:
+    def _draw_grid(
+        self, left: float, top: float, right: float, bottom: float, scale: float
+    ) -> None:
         height = bottom - top
         width = right - left
 
@@ -495,9 +528,15 @@ class LivePlotApp:
         if len(timestamps) < 2 or not any(labels):
             return
 
-        for region_start, region_end in self._compute_labeled_regions(timestamps, labels):
-            x0 = plot_left + ((region_start - start_time) / span) * (plot_right - plot_left)
-            x1 = plot_left + ((region_end - start_time) / span) * (plot_right - plot_left)
+        for region_start, region_end in self._compute_labeled_regions(
+            timestamps, labels
+        ):
+            x0 = plot_left + ((region_start - start_time) / span) * (
+                plot_right - plot_left
+            )
+            x1 = plot_left + ((region_end - start_time) / span) * (
+                plot_right - plot_left
+            )
             self.canvas.create_rectangle(
                 x0,
                 plot_top,
@@ -509,7 +548,9 @@ class LivePlotApp:
             )
 
     @staticmethod
-    def _compute_labeled_regions(timestamps: list[float], labels: list[int]) -> list[tuple[float, float]]:
+    def _compute_labeled_regions(
+        timestamps: list[float], labels: list[int]
+    ) -> list[tuple[float, float]]:
         if len(timestamps) != len(labels) or len(timestamps) < 2:
             return []
 
@@ -592,7 +633,9 @@ def parse_utc_timestamp(raw: str, row_number: int) -> datetime:
     try:
         return datetime.fromisoformat(raw_text.replace("Z", "+00:00"))
     except ValueError as exc:
-        raise ValueError(f"row {row_number}: invalid timestamp_utc {raw_text!r}") from exc
+        raise ValueError(
+            f"row {row_number}: invalid timestamp_utc {raw_text!r}"
+        ) from exc
 
 
 def parse_relative_timestamp_ms(raw: str, row_number: int) -> float:
@@ -600,7 +643,9 @@ def parse_relative_timestamp_ms(raw: str, row_number: int) -> float:
     try:
         return float(raw_text)
     except (TypeError, ValueError) as exc:
-        raise ValueError(f"row {row_number}: invalid timestamp value {raw_text!r}") from exc
+        raise ValueError(
+            f"row {row_number}: invalid timestamp value {raw_text!r}"
+        ) from exc
 
 
 def parse_csv_float(row: dict[str, str | None], field: str, row_number: int) -> float:
@@ -609,7 +654,9 @@ def parse_csv_float(row: dict[str, str | None], field: str, row_number: int) -> 
     try:
         return float(raw_text)
     except (TypeError, ValueError) as exc:
-        raise ValueError(f"row {row_number}: invalid {field} value {raw_text!r}") from exc
+        raise ValueError(
+            f"row {row_number}: invalid {field} value {raw_text!r}"
+        ) from exc
 
 
 def parse_csv_label(row: dict[str, str | None], row_number: int) -> int:
@@ -645,9 +692,15 @@ def main() -> int:
         if not command:
             print("error: --command must not be empty", file=sys.stderr)
             return 2
-        reader = MonitorReader(command=command, workdir=workdir, output_queue=reader_queue)
+        reader = MonitorReader(
+            command=command, workdir=workdir, output_queue=reader_queue
+        )
 
-    app = LivePlotApp(reader=reader, history_size=max(10, args.history), refresh_ms=max(10, args.refresh_ms))
+    app = LivePlotApp(
+        reader=reader,
+        history_size=max(10, args.history),
+        refresh_ms=max(10, args.refresh_ms),
+    )
 
     try:
         app.run()
