@@ -156,7 +156,31 @@ def build_title(meta: CsvMeta) -> str:
     return " | ".join(safe) if safe else "IMU Plot"
 
 
-def export_png(csv_path: Path, output_dir: Path | None = None) -> Path:
+def detrend_series(values: list[float]) -> list[float]:
+    n = len(values)
+    if n < 2:
+        return values
+    mean_x = (n - 1) / 2.0
+    mean_y = sum(values) / n
+    denom = 0.0
+    numer = 0.0
+    for i, y in enumerate(values):
+        dx = i - mean_x
+        denom += dx * dx
+        numer += dx * (y - mean_y)
+    slope = numer / denom if denom != 0 else 0.0
+    intercept = mean_y - slope * mean_x
+    return [y - (slope * i + intercept) for i, y in enumerate(values)]
+
+
+def export_png(
+    csv_path: Path,
+    output_dir: Path | None = None,
+    series: str = "acc",
+    center: bool = False,
+    detrend: bool = False,
+    axis: str | None = None,
+) -> Path:
     matplotlib.use("Agg")
     from matplotlib.figure import Figure
 
@@ -165,30 +189,50 @@ def export_png(csv_path: Path, output_dir: Path | None = None) -> Path:
     title = build_title(meta)
 
     times = data.timestamp
-    xs = [row[0] for row in data.acc]
-    ys = [row[1] for row in data.acc]
-    zs = [row[2] for row in data.acc]
+    series_data = data.acc if series == "acc" else data.vel
+    xs = [row[0] for row in series_data]
+    ys = [row[1] for row in series_data]
+    zs = [row[2] for row in series_data]
+    if center and xs and ys and zs:
+        xs = [v - sum(xs) / len(xs) for v in xs]
+        ys = [v - sum(ys) / len(ys) for v in ys]
+        zs = [v - sum(zs) / len(zs) for v in zs]
+    if detrend:
+        xs = detrend_series(xs)
+        ys = detrend_series(ys)
+        zs = detrend_series(zs)
 
     fig = Figure(figsize=(8, 5), dpi=150)
     ax = fig.add_subplot(111)
 
-    ax.plot(times, xs, label="x", color="#ff6b6b", linewidth=1.5)
-    ax.plot(times, ys, label="y", color="#ffd43b", linewidth=1.5)
-    ax.plot(times, zs, label="z", color="#69db7c", linewidth=1.5)
+    if axis is None or axis == "x":
+        ax.plot(times, xs, label="x", color="#ff6b6b", linewidth=1.5)
+    if axis is None or axis == "y":
+        ax.plot(times, ys, label="y", color="#ffd43b", linewidth=1.5)
+    if axis is None or axis == "z":
+        ax.plot(times, zs, label="z", color="#69db7c", linewidth=1.5)
 
     for left, right in compute_label_regions(times, data.label):
         ax.axvspan(left, right, color="#7cfc9a", alpha=0.25)
 
     ax.set_title(title)
     ax.set_xlabel("time (s)")
-    ax.set_ylabel("acc")
+    label = series
+    if center:
+        label += " (centered)"
+    if detrend:
+        label += " (detrended)"
+    ax.set_ylabel(label)
     ax.grid(True, alpha=0.25)
     ax.legend(loc="upper right")
 
     if output_dir is None:
         output_dir = Path(__file__).resolve().parents[1] / "screenshots"
 
-    filename = "_".join([meta.test_type, meta.subject, meta.location, "acc"]) + ".png"
+    name_parts = [meta.test_type, meta.subject, meta.location, series]
+    if axis is not None:
+        name_parts.append(axis)
+    filename = "_".join([part for part in name_parts if part]) + ".png"
     output_path = output_dir / filename
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(output_path, dpi=200, bbox_inches="tight")
@@ -238,7 +282,15 @@ class InteractivePlot:
         "z": "#69db7c",
     }
 
-    def __init__(self, csv_files: list[Path], title: str, output_dir: Path | None) -> None:
+    def __init__(
+        self,
+        csv_files: list[Path],
+        title: str,
+        output_dir: Path | None,
+        series: str,
+        center: bool,
+        detrend: bool,
+    ) -> None:
         if not csv_files:
             raise ValueError("no CSV files provided")
 
@@ -252,7 +304,11 @@ class InteractivePlot:
         self.root.title("IMU Interactive Plot")
         self.root.geometry("1280x820")
 
-        self.series_var = tk.StringVar(value="acc")
+        if series not in ("acc", "vel"):
+            raise ValueError("series must be 'acc' or 'vel'")
+        self.series = series
+        self.center = center
+        self.detrend = detrend
         self.show_x = tk.BooleanVar(value=True)
         self.show_y = tk.BooleanVar(value=True)
         self.show_z = tk.BooleanVar(value=True)
@@ -295,10 +351,18 @@ class InteractivePlot:
         self.canvas.mpl_connect("key_press_event", self._on_key)
 
     def _current_series(self) -> tuple[list[float], list[float], list[float]]:
-        series = self.data.acc
+        series = self.data.acc if self.series == "acc" else self.data.vel
         xs = [row[0] for row in series]
         ys = [row[1] for row in series]
         zs = [row[2] for row in series]
+        if self.center and xs and ys and zs:
+            xs = [v - sum(xs) / len(xs) for v in xs]
+            ys = [v - sum(ys) / len(ys) for v in ys]
+            zs = [v - sum(zs) / len(zs) for v in zs]
+        if self.detrend:
+            xs = detrend_series(xs)
+            ys = detrend_series(ys)
+            zs = detrend_series(zs)
         return xs, ys, zs
 
     def _draw_plot(self, reset_view: bool = False) -> None:
@@ -318,7 +382,12 @@ class InteractivePlot:
 
         self.ax.set_title(self.title)
         self.ax.set_xlabel("time (s)")
-        self.ax.set_ylabel("acc")
+        label = self.series
+        if self.center:
+            label += " (centered)"
+        if self.detrend:
+            label += " (detrended)"
+        self.ax.set_ylabel(label)
         self.ax.grid(True, alpha=0.25)
 
         if any([self.show_x.get(), self.show_y.get(), self.show_z.get()]):
@@ -396,7 +465,7 @@ class InteractivePlot:
 
     def _default_png_name(self) -> str:
         meta = parse_csv_metadata(self.csv_files[self.current_index])
-        parts = [meta.test_type, meta.subject, meta.location, "acc"]
+        parts = [meta.test_type, meta.subject, meta.location, self.series]
         safe = [part for part in parts if part]
         return "_".join(safe) + ".png"
 
@@ -485,10 +554,28 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Interactive plotter for IMU CSV recordings.")
     parser.add_argument("--csv", help="path to CSV file")
     parser.add_argument("--csv-dir", help="directory of CSV files to step through")
+    parser.add_argument("--pick", action="store_true", help="choose a single CSV file via file picker")
     parser.add_argument("--recursive", action="store_true", help="scan for CSVs recursively under --csv-dir")
     parser.add_argument("--out-dir", help="directory to save exported PNGs (default: CSV folder)")
     parser.add_argument("--batch", action="store_true", help="export PNGs without opening a window")
+    parser.add_argument("--series", choices=["acc", "vel"], default="acc", help="series to plot/export")
+    parser.add_argument("--center", action="store_true", help="center each axis by subtracting its mean")
+    parser.add_argument("--detrend", action="store_true", help="remove linear drift from each axis")
+    parser.add_argument("--per-axis", action="store_true", help="export separate PNGs for x, y, and z")
     return parser.parse_args()
+
+
+def pick_csv_file() -> Path | None:
+    root = tk.Tk()
+    root.withdraw()
+    path = filedialog.askopenfilename(
+        title="Choose CSV file",
+        filetypes=[("CSV", "*.csv")],
+    )
+    root.destroy()
+    if not path:
+        return None
+    return Path(path).expanduser().resolve()
 
 
 def main() -> int:
@@ -503,6 +590,11 @@ def main() -> int:
             csv_files = sorted(csv_dir.glob("*.csv"))
     elif args.csv:
         csv_files = [Path(args.csv).expanduser().resolve()]
+    elif args.pick:
+        picked = pick_csv_file()
+        if picked is None:
+            return 0
+        csv_files = [picked]
 
     if not csv_files:
         raise ValueError("no CSV files provided; use --csv or --csv-dir")
@@ -510,9 +602,33 @@ def main() -> int:
     output_dir = Path(args.out_dir).expanduser().resolve() if args.out_dir else repo_root / "screenshots"
     if args.batch:
         for csv_path in csv_files:
-            export_png(csv_path, output_dir=output_dir)
+            if args.per_axis:
+                for axis in ("x", "y", "z"):
+                    export_png(
+                        csv_path,
+                        output_dir=output_dir,
+                        series=args.series,
+                        center=args.center,
+                        detrend=args.detrend,
+                        axis=axis,
+                    )
+            else:
+                export_png(
+                    csv_path,
+                    output_dir=output_dir,
+                    series=args.series,
+                    center=args.center,
+                    detrend=args.detrend,
+                )
     else:
-        app = InteractivePlot(csv_files=csv_files, title="", output_dir=output_dir)
+        app = InteractivePlot(
+            csv_files=csv_files,
+            title="",
+            output_dir=output_dir,
+            series=args.series,
+            center=args.center,
+            detrend=args.detrend,
+        )
         app.run()
     return 0
 
