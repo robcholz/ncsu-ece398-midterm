@@ -22,7 +22,7 @@ const WHO_AM_I_REG: u8 = 0x0F;
 const ACC_OUT_START_REG: u8 = 0x28;
 const ACC_SCALE_M_S2_PER_LSB: f32 = 0.000_598_205_7;
 const CALIBRATION_SAMPLES: usize = 128;
-const STREAM_INTERVAL_MS: u64 = 20;
+const STREAM_INTERVAL_MS: u64 = 10;
 
 bind_interrupts!(struct Irqs {
     OTG_FS => usb::InterruptHandler<peripherals::USB_OTG_FS>;
