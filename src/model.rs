@@ -1,7 +1,4 @@
-pub const INPUT_LEN: usize = 100;
-pub const CHANNELS: usize = 4;
-pub const INPUT_SIZE: usize = INPUT_LEN * CHANNELS;
-pub const CLASSES: usize = 8;
+include!(concat!(env!("OUT_DIR"), "/model_constants.rs"));
 
 const G_TO_M_S2: f32 = 9.80665;
 

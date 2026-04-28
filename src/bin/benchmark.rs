@@ -4,24 +4,25 @@
 use core::fmt::Write as _;
 
 use embassy_executor::Spawner;
-use embassy_stm32::gpio::{Level, Output, Speed};
-use embassy_stm32::i2c::{Config as I2cConfig, Error as I2cError, I2c, Master};
+use embassy_stm32::i2c::{Config as I2cConfig, I2c, Master};
 use embassy_stm32::mode::Blocking;
 use embassy_stm32::time::Hertz;
 use embassy_stm32::usb::{Driver, Instance};
-use embassy_stm32::{Config, bind_interrupts, peripherals, usb};
+use embassy_stm32::{bind_interrupts, peripherals, usb};
 use embassy_time::{Instant, Timer};
 use embassy_usb::Builder;
 use embassy_usb::class::cdc_acm::{CdcAcmClass, State};
-use embassy_usb::driver::EndpointError;
 use heapless::String;
-use ncsu_ece398_midterms::model::ImuWindow;
+use ncsu_ece398_spring2026::model::ImuWindow;
 use panic_halt as _;
 
-const WHO_AM_I_REG: u8 = 0x0F;
-const ACC_OUT_START_REG: u8 = 0x28;
-const ACC_SCALE_M_S2_PER_LSB: f32 = 0.000_598_205_7;
-const STREAM_INTERVAL_MS: u64 = 20;
+mod shared;
+
+use shared::{
+    Disconnected, STREAM_INTERVAL_MS, clock_config, configure_sensor, probe_external_sensor,
+    read_acceleration, write_line,
+};
+
 const BENCHMARK_WINDOWS: usize = 32;
 
 bind_interrupts!(struct Irqs {
@@ -31,7 +32,6 @@ bind_interrupts!(struct Irqs {
 #[embassy_executor::main]
 async fn main(_spawner: Spawner) {
     let p = embassy_stm32::init(clock_config());
-    let mut mcu_sel = Output::new(p.PI0, Level::Low, Speed::Low);
 
     let mut i2c_config = I2cConfig::default();
     i2c_config.frequency = Hertz::khz(100);
@@ -75,50 +75,26 @@ async fn main(_spawner: Spawner) {
     let app_fut = async {
         loop {
             class.wait_connection().await;
-            let _ = run_benchmark(&mut class, &mut i2c3, &mut mcu_sel).await;
+            let _ = run_benchmark(&mut class, &mut i2c3).await;
         }
     };
 
     embassy_futures::join::join(usb_fut, app_fut).await;
 }
 
-fn clock_config() -> Config {
-    let mut config = Config::default();
-    {
-        use embassy_stm32::rcc::*;
-        config.rcc.hsi = true;
-        config.rcc.pll1 = Some(Pll {
-            source: PllSource::HSI,
-            prediv: PllPreDiv::DIV1,
-            mul: PllMul::MUL10,
-            divp: None,
-            divq: None,
-            divr: Some(PllDiv::DIV1),
-        });
-        config.rcc.sys = Sysclk::PLL1_R;
-        config.rcc.voltage_range = VoltageScale::RANGE1;
-        config.rcc.hsi48 = Some(Hsi48Config {
-            sync_from_usb: true,
-        });
-        config.rcc.mux.iclksel = mux::Iclksel::HSI48;
-    }
-    config
-}
-
 async fn run_benchmark<'d, T: Instance + 'd>(
     class: &mut CdcAcmClass<'d, Driver<'d, T>>,
     i2c3: &mut I2c<'_, Blocking, Master>,
-    _mcu_sel: &mut Output<'_>,
 ) -> Result<(), Disconnected> {
     write_line(class, "MKBOXPRO model benchmark online").await?;
-    let address = match probe_external_sensor(i2c3) {
-        Some(address) => address,
+    let probe = match probe_external_sensor(i2c3).await {
+        Some(probe) => probe,
         None => {
             write_line(class, "no external LSM6DSO16IS found on I2C3 at 0x6A/0x6B").await?;
             return Ok(());
         }
     };
-    if configure_sensor(i2c3, address).await.is_err() {
+    if configure_sensor(i2c3, probe).await.is_err() {
         write_line(class, "configure failed").await?;
         return Ok(());
     }
@@ -129,7 +105,7 @@ async fn run_benchmark<'d, T: Instance + 'd>(
 
     while predictions < BENCHMARK_WINDOWS {
         Timer::after_millis(STREAM_INTERVAL_MS).await;
-        let acc = match read_acceleration(i2c3, address) {
+        let acc = match read_acceleration(i2c3, probe) {
             Ok(acc) => acc,
             Err(_) => {
                 write_line(class, "read failed").await?;
@@ -175,86 +151,4 @@ async fn run_benchmark<'d, T: Instance + 'd>(
     )
     .unwrap();
     write_line(class, &line).await
-}
-
-fn probe_external_sensor(i2c: &mut I2c<'_, Blocking, Master>) -> Option<u8> {
-    for address in [0x6A, 0x6B] {
-        if read_reg(i2c, address, WHO_AM_I_REG).ok() == Some(0x22) {
-            return Some(address);
-        }
-    }
-    None
-}
-
-async fn configure_sensor(
-    i2c: &mut I2c<'_, Blocking, Master>,
-    address: u8,
-) -> Result<(), I2cError> {
-    write_reg(i2c, address, 0x12, 0x01)?;
-    Timer::after_millis(20).await;
-    write_reg(i2c, address, 0x12, 0x44)?;
-    write_reg(i2c, address, 0x11, 0x00)?;
-    write_reg(i2c, address, 0x10, 0x30)?;
-    Timer::after_millis(100).await;
-    Ok(())
-}
-
-fn read_acceleration(
-    i2c: &mut I2c<'_, Blocking, Master>,
-    address: u8,
-) -> Result<[f32; 3], I2cError> {
-    let mut data = [0u8; 6];
-    i2c.blocking_write_read(address, &[ACC_OUT_START_REG], &mut data)?;
-    let raw_x = i16::from_le_bytes([data[0], data[1]]);
-    let raw_y = i16::from_le_bytes([data[2], data[3]]);
-    let raw_z = i16::from_le_bytes([data[4], data[5]]);
-    Ok([
-        raw_x as f32 * ACC_SCALE_M_S2_PER_LSB,
-        raw_y as f32 * ACC_SCALE_M_S2_PER_LSB,
-        raw_z as f32 * ACC_SCALE_M_S2_PER_LSB,
-    ])
-}
-
-fn read_reg(i2c: &mut I2c<'_, Blocking, Master>, address: u8, reg: u8) -> Result<u8, I2cError> {
-    let mut value = [0u8; 1];
-    i2c.blocking_write_read(address, &[reg], &mut value)?;
-    Ok(value[0])
-}
-
-fn write_reg(
-    i2c: &mut I2c<'_, Blocking, Master>,
-    address: u8,
-    reg: u8,
-    value: u8,
-) -> Result<(), I2cError> {
-    i2c.blocking_write(address, &[reg, value])
-}
-
-async fn write_line<'d, T: Instance + 'd>(
-    class: &mut CdcAcmClass<'d, Driver<'d, T>>,
-    line: &str,
-) -> Result<(), Disconnected> {
-    write_all(class, line.as_bytes()).await?;
-    write_all(class, b"\r\n").await
-}
-
-async fn write_all<'d, T: Instance + 'd>(
-    class: &mut CdcAcmClass<'d, Driver<'d, T>>,
-    data: &[u8],
-) -> Result<(), Disconnected> {
-    for chunk in data.chunks(64) {
-        class.write_packet(chunk).await?;
-    }
-    Ok(())
-}
-
-struct Disconnected;
-
-impl From<EndpointError> for Disconnected {
-    fn from(error: EndpointError) -> Self {
-        match error {
-            EndpointError::BufferOverflow => panic!("USB endpoint buffer overflow"),
-            EndpointError::Disabled => Self,
-        }
-    }
 }

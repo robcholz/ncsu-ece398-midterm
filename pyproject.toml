@@ -1,5 +1,5 @@
 [project]
-name = "mkboxpro-imu-tools"
+name = "ncsu-ece398-spring2026"
 version = "0.1.0"
 description = "Python utilities for visualizing MKBOXPRO IMU monitor output."
 requires-python = ">=3.10"
