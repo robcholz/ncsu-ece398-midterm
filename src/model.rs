@@ -79,8 +79,8 @@ impl ImuWindow {
         let magnitude = sqrt_approx(ax * ax + ay * ay + az * az);
         let values = [ax, ay, az, magnitude];
         let base = self.next_sample * CHANNELS;
-        for channel in 0..CHANNELS {
-            self.input[base + channel] = quantize_normalized(values[channel], channel);
+        for (channel, value) in values.iter().enumerate().take(CHANNELS) {
+            self.input[base + channel] = quantize_normalized(*value, channel);
         }
 
         self.next_sample += 1;
@@ -94,6 +94,12 @@ impl ImuWindow {
         } else {
             None
         }
+    }
+}
+
+impl Default for ImuWindow {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

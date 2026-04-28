@@ -5,13 +5,21 @@ edition = "2024"
 build = "build.rs"
 autobins = false
 
+[lib]
+test = false
+harness = false
+
 [[bin]]
 name = "data-collection"
 path = "src/bin/data-collection.rs"
+test = false
+harness = false
 
 [[bin]]
 name = "benchmark"
 path = "src/bin/benchmark.rs"
+test = false
+harness = false
 
 [dependencies]
 embassy-executor = { version = "0.10.0", features = ["platform-cortex-m", "executor-thread"] }

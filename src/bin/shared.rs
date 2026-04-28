@@ -78,13 +78,13 @@ pub fn clock_config() -> Config {
 
 pub async fn probe_external_sensor(i2c: &mut I2c<'_, Blocking, Master>) -> Option<ProbeResult> {
     for address in [0x6A, 0x6B] {
-        if let Ok(value) = read_reg(i2c, address, WHO_AM_I_REG) {
-            if value == SensorKind::Lsm6dso16is.expected_whoami() {
-                return Some(ProbeResult {
-                    sensor: SensorKind::Lsm6dso16is,
-                    address,
-                });
-            }
+        if let Ok(value) = read_reg(i2c, address, WHO_AM_I_REG)
+            && value == SensorKind::Lsm6dso16is.expected_whoami()
+        {
+            return Some(ProbeResult {
+                sensor: SensorKind::Lsm6dso16is,
+                address,
+            });
         }
     }
 

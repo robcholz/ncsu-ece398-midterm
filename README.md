@@ -10,7 +10,7 @@
 - macOS host tools: `stty` for `cargo monitor`
 - `clang` for compiling CMSIS-NN C sources
 
-```bash
+```shell
 rustup target add thumbv8m.main-none-eabihf
 rustup component add llvm-tools-preview
 ```
@@ -27,7 +27,7 @@ The model pipeline is:
 
 ### 1. Train and Save the Checkpoint
 
-```bash
+```shell
 uv run python -m benchmark.host \
   --task multiclass \
   --model small \
@@ -53,7 +53,7 @@ uv run python -m benchmark.host \
 
 This is the CLI that generates the model C header used by the firmware:
 
-```bash
+```shell
 uv run python -m model.export_cmsis \
   --checkpoint model/artifacts/final_multiclass_small_event_centered.pt \
   --output model/cmsis/imu_model_weights.h \
@@ -65,7 +65,7 @@ The firmware build compiles the hand-written wrapper plus the generated weights 
 
 ### 3. Evaluate the Quantized C Model
 
-```bash
+```shell
 uv run python -m benchmark.quantized_c \
   --checkpoint model/artifacts/final_multiclass_small_event_centered.pt \
   --output benchmark/results/quantized_c_eval.json
@@ -75,22 +75,29 @@ This compares the PyTorch checkpoint against the generated C/CMSIS-NN model on t
 
 ## Flash
 
-```bash
+```shell
 cargo build --release --bin data-collection
 cargo flash --bin data-collection
 ```
 
 For the model benchmark firmware:
 
-```bash
+```shell
 cargo build --release --bin benchmark
 cargo flash --bin benchmark
 ```
 
-## Record
+## Data Collection
 
-```bash
+```shell
 uv run scripts/monitor_record.py <event_name> --output-dir <output_dir>
 uv run scripts/monitor_plot.py --csv <path_to_data>
 uv run scripts/interactive_plot.py --csv <path_to_data>
+```
+
+## Quality
+
+```shell
+cargo fmt --all
+cargo clippy --all-targets --all-features --workspace -- -D warnings
 ```
