@@ -53,4 +53,4 @@ Macro F1
 
 #### Power
 
-- [ ] use macos cli api to capture the usb current metrics
+- ❌(impossible) use macos cli api to capture the usb current metrics
