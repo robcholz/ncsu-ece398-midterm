@@ -21,7 +21,7 @@ path = "src/bin/benchmark.rs"
 test = false
 harness = false
 
-[dependencies]
+[target.'cfg(all(target_arch = "arm", target_os = "none"))'.dependencies]
 embassy-executor = { version = "0.10.0", features = ["platform-cortex-m", "executor-thread"] }
 embassy-futures = "0.1.2"
 embassy-stm32 = { version = "0.6.0", features = ["stm32u585ai", "time-driver-any", "memory-x"] }
@@ -30,6 +30,7 @@ embassy-usb = "0.6.0"
 
 # dont remove
 cortex-m = { version = "0.7.7", features = ["inline-asm", "critical-section-single-core"] }
-cortex-m-rt = "0.7.5"
+cortex-m-rt = { version = "0.7.5", features = ["paint-stack"] }
+embedded-alloc = "0.6.0"
 heapless = { version = "0.9", default-features = false }
 panic-halt = "1.0.0"
