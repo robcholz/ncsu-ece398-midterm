@@ -1,0 +1,210 @@
+{
+  "dataset": {
+    "data_root": "dataset/Multimodal Cough Dataset",
+    "num_windows": 20000,
+    "train_windows": 14914,
+    "val_windows": 5086,
+    "train_subjects": [
+      "005",
+      "006",
+      "007",
+      "008",
+      "009",
+      "010",
+      "011",
+      "012",
+      "013",
+      "014"
+    ],
+    "val_subjects": [
+      "015",
+      "016",
+      "017"
+    ],
+    "class_counts": {
+      "background": 4979,
+      "Cough": 5611,
+      "Speech": 5585,
+      "Sneeze": 505,
+      "Deep breath": 1496,
+      "Groan": 619,
+      "Laugh": 661,
+      "Speech (far)": 544
+    }
+  },
+  "model": {
+    "name": "SmallAccelCNN",
+    "input_shape": [
+      4,
+      100
+    ],
+    "params": 9880,
+    "size_mb": 0.037689208984375
+  },
+  "config": {
+    "task": "multiclass",
+    "model": "small",
+    "epochs": 30,
+    "batch_size": 64,
+    "lr": 0.001,
+    "window_seconds": 1.0,
+    "stride": 0.5,
+    "label_overlap_threshold": 0.15,
+    "include_magnitude": true,
+    "normalization": "train",
+    "balanced_sampler": true,
+    "tune_threshold": false,
+    "threshold_metric": "macro-f1",
+    "threshold": null,
+    "max_windows": 20000,
+    "max_background_ratio": 3.0,
+    "sampling_strategy": "event-centered",
+    "event_windows_per_event": 3,
+    "event_jitter_seconds": 0.25,
+    "background_windows_per_event": 1.0,
+    "background_exclusion_seconds": 0.25
+  },
+  "metrics": {
+    "accuracy": 0.2670074714903657,
+    "macro_f1": 0.15121774617424594,
+    "macro_recall": 0.16647391003735798,
+    "per_class": {
+      "background": {
+        "precision": 0.41115702479338845,
+        "recall": 0.15681639085894405,
+        "f1": 0.22703936109526526,
+        "support": 1269
+      },
+      "Cough": {
+        "precision": 0.5030581039755352,
+        "recall": 0.23875181422351233,
+        "f1": 0.32381889763779526,
+        "support": 1378
+      },
+      "Speech": {
+        "precision": 0.327319587628866,
+        "recall": 0.5114093959731544,
+        "f1": 0.39916186485070715,
+        "support": 1490
+      },
+      "Sneeze": {
+        "precision": 0.009302325581395349,
+        "recall": 0.039603960396039604,
+        "f1": 0.015065913370998118,
+        "support": 101
+      },
+      "Deep breath": {
+        "precision": 0.12173913043478261,
+        "recall": 0.08022922636103152,
+        "f1": 0.09671848013816925,
+        "support": 349
+      },
+      "Groan": {
+        "precision": 0.06179775280898876,
+        "recall": 0.04602510460251046,
+        "f1": 0.052757793764988015,
+        "support": 239
+      },
+      "Laugh": {
+        "precision": 0.03289473684210526,
+        "recall": 0.053475935828877004,
+        "f1": 0.04073319755600814,
+        "support": 187
+      },
+      "Speech (far)": {
+        "precision": 0.03138075313807531,
+        "recall": 0.2054794520547945,
+        "f1": 0.0544464609800363,
+        "support": 73
+      }
+    },
+    "confusion_matrix": [
+      [
+        199,
+        92,
+        496,
+        109,
+        96,
+        42,
+        78,
+        157
+      ],
+      [
+        91,
+        329,
+        615,
+        103,
+        31,
+        51,
+        137,
+        21
+      ],
+      [
+        138,
+        100,
+        762,
+        115,
+        72,
+        52,
+        54,
+        197
+      ],
+      [
+        4,
+        27,
+        56,
+        4,
+        0,
+        2,
+        6,
+        2
+      ],
+      [
+        23,
+        51,
+        186,
+        28,
+        28,
+        3,
+        3,
+        27
+      ],
+      [
+        12,
+        17,
+        103,
+        38,
+        1,
+        11,
+        11,
+        46
+      ],
+      [
+        8,
+        31,
+        84,
+        27,
+        0,
+        14,
+        10,
+        13
+      ],
+      [
+        9,
+        7,
+        26,
+        6,
+        2,
+        3,
+        5,
+        15
+      ]
+    ]
+  },
+  "host": {
+    "device": "cpu",
+    "latency_ms_p50": 0.14062500122236088,
+    "latency_ms_p95": 0.14996634927229024,
+    "peak_ram_mb": 445.53125
+  }
+}

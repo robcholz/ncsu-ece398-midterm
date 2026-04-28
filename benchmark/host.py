@@ -53,8 +53,9 @@ def main() -> int:
         raise SystemExit("No windows were built from the dataset.")
     split = subject_holdout_split(x, y, metadata, args.val_subject)
     split = apply_task(split, args.task)
+    normalization_stats = None
     if normalization_mode(args) == "train":
-        split = apply_train_normalization(split)
+        split, normalization_stats = apply_train_normalization_with_stats(split)
 
     model = build_model(
         args.model,
@@ -171,6 +172,23 @@ def main() -> int:
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    if args.save_model:
+        args.save_model.parent.mkdir(parents=True, exist_ok=True)
+        torch.save(
+            {
+                "state_dict": model.state_dict(),
+                "model": args.model,
+                "class_names": split.class_names,
+                "input_shape": [
+                    int(split.x_train.shape[1]),
+                    int(split.x_train.shape[2]),
+                ],
+                "config": result["config"],
+                "normalization": normalization_stats,
+                "metrics": serialize_report(best_report),
+            },
+            args.save_model,
+        )
     return 0
 
 
@@ -217,6 +235,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--device", default="cpu")
     parser.add_argument("--seed", type=int, default=398)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--save-model", type=Path)
     return parser.parse_args()
 
 
@@ -267,10 +286,15 @@ def apply_task(split, task: str):
 
 
 def apply_train_normalization(split):
+    normalized, _stats = apply_train_normalization_with_stats(split)
+    return normalized
+
+
+def apply_train_normalization_with_stats(split):
     mean = split.x_train.mean(axis=(0, 2), keepdims=True)
     std = split.x_train.std(axis=(0, 2), keepdims=True)
     std = np.maximum(std, 1e-6)
-    return split.__class__(
+    normalized = split.__class__(
         x_train=((split.x_train - mean) / std).astype(np.float32),
         y_train=split.y_train,
         x_val=((split.x_val - mean) / std).astype(np.float32),
@@ -279,6 +303,11 @@ def apply_train_normalization(split):
         train_subjects=split.train_subjects,
         val_subjects=split.val_subjects,
     )
+    stats = {
+        "mean": mean.reshape(-1).astype(float).tolist(),
+        "std": std.reshape(-1).astype(float).tolist(),
+    }
+    return normalized, stats
 
 
 def train_one_epoch(
