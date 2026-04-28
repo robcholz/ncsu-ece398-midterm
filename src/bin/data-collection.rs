@@ -26,6 +26,7 @@ use shared::{
 };
 
 const CALIBRATION_SAMPLES: usize = 128;
+const STREAM_INTERVAL_MS: u64 = 10;
 
 bind_interrupts!(struct Irqs {
     OTG_FS => usb::InterruptHandler<peripherals::USB_OTG_FS>;
