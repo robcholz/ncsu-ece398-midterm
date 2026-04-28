@@ -11,3 +11,6 @@ __pycache__/
 
 # uv
 .ruff_cache/
+
+dataset/Multimodal_Cough_Dataset.zip
+dataset/Multimodal Cough Dataset
