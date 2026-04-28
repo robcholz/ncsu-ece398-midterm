@@ -12,9 +12,6 @@ Classes: 7 events + background = 8 classes
 
 1. Data
 
-Raw sample:
-[timestamp, ax, ay, az, label]
-
 Windowing:
 
 fs = 100 Hz
