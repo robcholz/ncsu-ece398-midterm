@@ -15,7 +15,7 @@ use heapless::String;
 pub const WHO_AM_I_REG: u8 = 0x0F;
 pub const ACC_OUT_START_REG: u8 = 0x28;
 pub const ACC_SCALE_M_S2_PER_LSB: f32 = 0.000_598_205_7;
-pub const STREAM_INTERVAL_MS: u64 = 20;
+pub const STREAM_INTERVAL_MS: u64 = 10;
 
 #[derive(Clone, Copy)]
 pub enum SensorKind {
