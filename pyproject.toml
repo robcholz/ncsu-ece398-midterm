@@ -1,10 +1,12 @@
 [project]
-name = "mkboxpro-imu-tools"
+name = "ncsu-ece398-spring2026"
 version = "0.1.0"
 description = "Python utilities for visualizing MKBOXPRO IMU monitor output."
 requires-python = ">=3.10"
 dependencies = [
     "matplotlib>=3.10.8",
+    "numpy>=2.0",
+    "torch>=2.0",
 ]
 
 [tool.monitor-plot]
