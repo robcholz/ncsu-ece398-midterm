@@ -37,6 +37,26 @@ class DatasetWindowTests(unittest.TestCase):
             cough_idx = int(np.where(y == LABELS.index("Cough"))[0][0])
             self.assertEqual(metadata[cough_idx]["subject"], "005")
 
+    def test_event_centered_sampling_keeps_event_and_background_windows(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = self._make_dataset(Path(tmp))
+
+            x, y, metadata = build_windows(
+                root,
+                WindowConfig(
+                    sampling_strategy="event-centered",
+                    event_windows_per_event=2,
+                    background_windows_per_event=2,
+                    background_exclusion_seconds=0.25,
+                    max_background_ratio=None,
+                ),
+            )
+
+            self.assertEqual(x.shape, (4, 3, 200))
+            self.assertEqual(y.tolist().count(LABELS.index("Cough")), 2)
+            self.assertEqual(y.tolist().count(LABELS.index("background")), 2)
+            self.assertEqual({item["source"] for item in metadata}, {"event", "background"})
+
     def _make_dataset(self, root: Path) -> Path:
         dataset_root = root / "Multimodal Cough Dataset"
         trial = dataset_root / "005" / "Trial_1_No_Talking"

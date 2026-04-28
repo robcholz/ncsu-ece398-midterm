@@ -50,6 +50,57 @@ class SmallAccelCNN(nn.Module):
         return self.net(x)
 
 
+class MediumAccelCNN(nn.Module):
+    """Higher-capacity Conv1D benchmark model with dropout regularization."""
+
+    def __init__(
+        self,
+        in_channels: int = 3,
+        num_classes: int = 8,
+        dropout: float = 0.2,
+    ) -> None:
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Conv1d(in_channels, 32, kernel_size=5, padding=2),
+            nn.BatchNorm1d(32),
+            nn.ReLU(),
+            nn.MaxPool1d(2),
+            nn.Conv1d(32, 64, kernel_size=5, padding=2),
+            nn.BatchNorm1d(64),
+            nn.ReLU(),
+            nn.MaxPool1d(2),
+            nn.Conv1d(64, 128, kernel_size=3, padding=1),
+            nn.BatchNorm1d(128),
+            nn.ReLU(),
+            nn.AdaptiveAvgPool1d(1),
+            nn.Flatten(),
+            nn.Linear(128, 64),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(64, num_classes),
+        )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return self.net(x)
+
+
+def build_model(
+    name: str,
+    in_channels: int,
+    num_classes: int,
+    dropout: float = 0.2,
+) -> nn.Module:
+    if name == "small":
+        return SmallAccelCNN(in_channels=in_channels, num_classes=num_classes, dropout=0.0)
+    if name == "medium":
+        return MediumAccelCNN(
+            in_channels=in_channels,
+            num_classes=num_classes,
+            dropout=dropout,
+        )
+    raise ValueError(f"Unknown model: {name}")
+
+
 def count_parameters(model: nn.Module) -> int:
     return sum(p.numel() for p in model.parameters())
 

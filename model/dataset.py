@@ -38,6 +38,11 @@ class WindowConfig:
     include_magnitude: bool = False
     normalize: bool = False
     max_background_ratio: float | None = 3.0
+    sampling_strategy: str = "sliding"
+    event_windows_per_event: int = 3
+    event_jitter_seconds: float = 0.25
+    background_windows_per_event: float = 1.0
+    background_exclusion_seconds: float = 0.25
     seed: int = 398
 
     @property
@@ -136,6 +141,9 @@ def build_windows(
     labels: list[int] = []
     metadata: list[dict[str, str]] = []
 
+    if config.sampling_strategy not in {"sliding", "event-centered"}:
+        raise ValueError(f"Unknown sampling strategy: {config.sampling_strategy}")
+
     background_indices: list[int] = []
     event_count = 0
     for recording in discover_recordings(data_root):
@@ -148,23 +156,34 @@ def build_windows(
         if end <= start:
             continue
 
-        cursor = start
-        while cursor <= end:
-            window = _window_at(times, values, cursor, config)
-            label = _label_window(
-                cursor,
-                cursor + config.window_seconds,
-                recording.events,
+        if config.sampling_strategy == "sliding":
+            added_events = _add_sliding_windows(
+                windows,
+                labels,
+                metadata,
+                background_indices,
+                recording,
+                times,
+                values,
+                start,
+                end,
                 config,
             )
-            if label == 0:
-                background_indices.append(len(labels))
-            else:
-                event_count += 1
-            windows.append(window)
-            labels.append(label)
-            metadata.append({"subject": recording.subject, "trial": recording.trial})
-            cursor += config.stride_seconds
+        else:
+            added_events = _add_event_centered_windows(
+                windows,
+                labels,
+                metadata,
+                background_indices,
+                rng,
+                recording,
+                times,
+                values,
+                start,
+                end,
+                config,
+            )
+        event_count += added_events
 
     keep = list(range(len(labels)))
     if config.max_background_ratio is not None and event_count > 0:
@@ -192,6 +211,123 @@ def build_windows(
     y = np.asarray([labels[idx] for idx in keep], dtype=np.int64)
     kept_metadata = [metadata[idx] for idx in keep]
     return x, y, kept_metadata
+
+
+def _add_sliding_windows(
+    windows: list[np.ndarray],
+    labels: list[int],
+    metadata: list[dict[str, str]],
+    background_indices: list[int],
+    recording: Recording,
+    times: np.ndarray,
+    values: np.ndarray,
+    start: float,
+    end: float,
+    config: WindowConfig,
+) -> int:
+    event_count = 0
+    cursor = start
+    while cursor <= end:
+        window = _window_at(times, values, cursor, config)
+        label = _label_window(
+            cursor,
+            cursor + config.window_seconds,
+            recording.events,
+            config,
+        )
+        if label == 0:
+            background_indices.append(len(labels))
+        else:
+            event_count += 1
+        windows.append(window)
+        labels.append(label)
+        metadata.append(
+            {"subject": recording.subject, "trial": recording.trial, "source": "sliding"}
+        )
+        cursor += config.stride_seconds
+    return event_count
+
+
+def _add_event_centered_windows(
+    windows: list[np.ndarray],
+    labels: list[int],
+    metadata: list[dict[str, str]],
+    background_indices: list[int],
+    rng: random.Random,
+    recording: Recording,
+    times: np.ndarray,
+    values: np.ndarray,
+    start: float,
+    end: float,
+    config: WindowConfig,
+) -> int:
+    event_count = 0
+    for event in recording.events:
+        center = (event.start + event.end) / 2
+        for _ in range(max(config.event_windows_per_event, 1)):
+            jitter = rng.uniform(-config.event_jitter_seconds, config.event_jitter_seconds)
+            window_start = _clamp_window_start(
+                center - config.window_seconds / 2 + jitter,
+                start,
+                end,
+            )
+            windows.append(_window_at(times, values, window_start, config))
+            labels.append(LABEL_TO_INDEX[event.label])
+            metadata.append(
+                {
+                    "subject": recording.subject,
+                    "trial": recording.trial,
+                    "source": "event",
+                }
+            )
+            event_count += 1
+
+    background_target = int(
+        round(len(recording.events) * max(config.background_windows_per_event, 0.0))
+    )
+    attempts = 0
+    added_background = 0
+    while added_background < background_target and attempts < max(background_target * 30, 30):
+        attempts += 1
+        window_start = rng.uniform(start, end)
+        window_end = window_start + config.window_seconds
+        if _too_close_to_event(
+            window_start,
+            window_end,
+            recording.events,
+            config.background_exclusion_seconds,
+        ):
+            continue
+        if _label_window(window_start, window_end, recording.events, config) != 0:
+            continue
+        windows.append(_window_at(times, values, window_start, config))
+        labels.append(LABEL_TO_INDEX[BACKGROUND_LABEL])
+        background_indices.append(len(labels) - 1)
+        metadata.append(
+            {
+                "subject": recording.subject,
+                "trial": recording.trial,
+                "source": "background",
+            }
+        )
+        added_background += 1
+    return event_count
+
+
+def _clamp_window_start(window_start: float, start: float, end: float) -> float:
+    return min(max(window_start, start), end)
+
+
+def _too_close_to_event(
+    start: float,
+    end: float,
+    events: tuple[Event, ...],
+    margin: float,
+) -> bool:
+    for event in events:
+        if max(start, event.start - margin) < min(end, event.end + margin):
+            return True
+    return False
 
 
 def subject_holdout_split(
