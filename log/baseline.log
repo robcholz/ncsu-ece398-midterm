@@ -1,0 +1,951 @@
+monitoring /dev/cu.usbmodem101 at 115200
+press Ctrl-C to stop
+benchmark_heartbeat tick=1
+benchmark_heartbeat tick=2
+benchmark_start board=STMBOXPRO model=quantized_cmsis_nn windows=16 input_len=100 channels=4
+benchmark_config warmup_runs=8 inference_frequency_hz=100
+benchmark_size flash_size=299.4 KiB model_binary_size=10.7 KiB model_static_ram=14.6 KiB
+benchmark_phase=warmup
+benchmark_phase=measure
+benchmark_sample sequence=0 window=0 start=0 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=1 window=1 start=7 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=2 window=2 start=14 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=3 window=3 start=21 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=4 window=4 start=28 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=5 window=5 start=35 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=6 window=6 start=42 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=7 window=7 start=49 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=8 window=8 start=56 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=9 window=9 start=63 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=10 window=10 start=70 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=11 window=11 start=77 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=12 window=12 start=84 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=13 window=13 start=91 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=14 window=14 start=98 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=15 window=15 start=5 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=16 window=0 start=12 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=17 window=1 start=19 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=18 window=2 start=26 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=19 window=3 start=33 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=20 window=4 start=40 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=21 window=5 start=47 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=22 window=6 start=54 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=23 window=7 start=61 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=24 window=8 start=68 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=25 window=9 start=75 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=26 window=10 start=82 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=27 window=11 start=89 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=28 window=12 start=96 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=29 window=13 start=3 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=30 window=14 start=10 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=31 window=15 start=17 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=32 window=0 start=24 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=33 window=1 start=31 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=34 window=2 start=38 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=35 window=3 start=45 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=36 window=4 start=52 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=37 window=5 start=59 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=38 window=6 start=66 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=39 window=7 start=73 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=40 window=8 start=80 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=41 window=9 start=87 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=42 window=10 start=94 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=43 window=11 start=1 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=44 window=12 start=8 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=45 window=13 start=15 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=46 window=14 start=22 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=47 window=15 start=29 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=48 window=0 start=36 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=49 window=1 start=43 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=50 window=2 start=50 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=51 window=3 start=57 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=52 window=4 start=64 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=53 window=5 start=71 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=54 window=6 start=78 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=55 window=7 start=85 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=56 window=8 start=92 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=57 window=9 start=99 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=58 window=10 start=6 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=59 window=11 start=13 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=60 window=12 start=20 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=61 window=13 start=27 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=62 window=14 start=34 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=63 window=15 start=41 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=64 window=0 start=48 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=65 window=1 start=55 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=66 window=2 start=62 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=67 window=3 start=69 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=68 window=4 start=76 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=69 window=5 start=83 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=70 window=6 start=90 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=71 window=7 start=97 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=72 window=8 start=4 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=73 window=9 start=11 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=74 window=10 start=18 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=75 window=11 start=25 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=76 window=12 start=32 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=77 window=13 start=39 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=78 window=14 start=46 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=79 window=15 start=53 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=80 window=0 start=60 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=81 window=1 start=67 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=82 window=2 start=74 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=83 window=3 start=81 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=84 window=4 start=88 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=85 window=5 start=95 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=86 window=6 start=2 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=87 window=7 start=9 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=88 window=8 start=16 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=89 window=9 start=23 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=90 window=10 start=30 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=91 window=11 start=37 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=92 window=12 start=44 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=93 window=13 start=51 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=94 window=14 start=58 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=95 window=15 start=65 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=96 window=0 start=72 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=97 window=1 start=79 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=98 window=2 start=86 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=99 window=3 start=93 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Speech
+benchmark_sample sequence=100 window=4 start=0 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=101 window=5 start=7 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=102 window=6 start=14 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=103 window=7 start=21 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=104 window=8 start=28 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=105 window=9 start=35 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=106 window=10 start=42 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=107 window=11 start=49 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=108 window=12 start=56 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=109 window=13 start=63 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=110 window=14 start=70 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=111 window=15 start=77 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=112 window=0 start=84 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=113 window=1 start=91 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=114 window=2 start=98 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=115 window=3 start=5 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=116 window=4 start=12 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=117 window=5 start=19 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=118 window=6 start=26 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=119 window=7 start=33 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=120 window=8 start=40 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=121 window=9 start=47 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=122 window=10 start=54 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=123 window=11 start=61 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=124 window=12 start=68 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=125 window=13 start=75 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=126 window=14 start=82 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=127 window=15 start=89 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=128 window=0 start=96 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=129 window=1 start=3 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=130 window=2 start=10 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=131 window=3 start=17 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=132 window=4 start=24 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=133 window=5 start=31 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=134 window=6 start=38 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=135 window=7 start=45 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=136 window=8 start=52 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=137 window=9 start=59 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=138 window=10 start=66 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=139 window=11 start=73 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=140 window=12 start=80 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=141 window=13 start=87 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=142 window=14 start=94 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=143 window=15 start=1 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=144 window=0 start=8 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=145 window=1 start=15 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=146 window=2 start=22 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=147 window=3 start=29 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=148 window=4 start=36 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=149 window=5 start=43 latency_us=106933 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=150 window=6 start=50 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=151 window=7 start=57 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=152 window=8 start=64 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=153 window=9 start=71 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=154 window=10 start=78 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=155 window=11 start=85 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=156 window=12 start=92 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=157 window=13 start=99 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Cough
+benchmark_sample sequence=158 window=14 start=6 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=159 window=15 start=13 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=160 window=0 start=20 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=161 window=1 start=27 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=162 window=2 start=34 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=163 window=3 start=41 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=164 window=4 start=48 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=165 window=5 start=55 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=166 window=6 start=62 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=167 window=7 start=69 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=168 window=8 start=76 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=169 window=9 start=83 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=170 window=10 start=90 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=171 window=11 start=97 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=172 window=12 start=4 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=173 window=13 start=11 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=174 window=14 start=18 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=175 window=15 start=25 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=176 window=0 start=32 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=177 window=1 start=39 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=178 window=2 start=46 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=179 window=3 start=53 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=180 window=4 start=60 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=181 window=5 start=67 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=182 window=6 start=74 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=183 window=7 start=81 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=184 window=8 start=88 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=185 window=9 start=95 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=186 window=10 start=2 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=187 window=11 start=9 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=188 window=12 start=16 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=189 window=13 start=23 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=190 window=14 start=30 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=191 window=15 start=37 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=192 window=0 start=44 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=193 window=1 start=51 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=194 window=2 start=58 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=195 window=3 start=65 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=196 window=4 start=72 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=197 window=5 start=79 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=198 window=6 start=86 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=199 window=7 start=93 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=200 window=8 start=0 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=201 window=9 start=7 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=202 window=10 start=14 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=203 window=11 start=21 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=204 window=12 start=28 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=205 window=13 start=35 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=206 window=14 start=42 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=207 window=15 start=49 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=208 window=0 start=56 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=209 window=1 start=63 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=210 window=2 start=70 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=211 window=3 start=77 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=212 window=4 start=84 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=213 window=5 start=91 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=214 window=6 start=98 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=215 window=7 start=5 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=216 window=8 start=12 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=217 window=9 start=19 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=218 window=10 start=26 latency_us=106933 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=219 window=11 start=33 latency_us=106933 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=220 window=12 start=40 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=221 window=13 start=47 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=222 window=14 start=54 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=223 window=15 start=61 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=224 window=0 start=68 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=225 window=1 start=75 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=226 window=2 start=82 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=227 window=3 start=89 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Speech
+benchmark_sample sequence=228 window=4 start=96 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=229 window=5 start=3 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=230 window=6 start=10 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=231 window=7 start=17 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=232 window=8 start=24 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=233 window=9 start=31 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=234 window=10 start=38 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=235 window=11 start=45 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=236 window=12 start=52 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=237 window=13 start=59 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=238 window=14 start=66 latency_us=106933 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=239 window=15 start=73 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=240 window=0 start=80 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=241 window=1 start=87 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=242 window=2 start=94 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=243 window=3 start=1 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=244 window=4 start=8 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=245 window=5 start=15 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=246 window=6 start=22 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=247 window=7 start=29 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=248 window=8 start=36 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=249 window=9 start=43 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=250 window=10 start=50 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=251 window=11 start=57 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=252 window=12 start=64 latency_us=106933 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=253 window=13 start=71 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=254 window=14 start=78 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=255 window=15 start=85 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=256 window=0 start=92 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=257 window=1 start=99 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=258 window=2 start=6 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=259 window=3 start=13 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=260 window=4 start=20 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=261 window=5 start=27 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=262 window=6 start=34 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=263 window=7 start=41 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=264 window=8 start=48 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=265 window=9 start=55 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=266 window=10 start=62 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=267 window=11 start=69 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=268 window=12 start=76 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=269 window=13 start=83 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=270 window=14 start=90 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=271 window=15 start=97 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=272 window=0 start=4 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=273 window=1 start=11 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=274 window=2 start=18 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=275 window=3 start=25 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=276 window=4 start=32 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=277 window=5 start=39 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=278 window=6 start=46 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=279 window=7 start=53 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=280 window=8 start=60 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=281 window=9 start=67 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=282 window=10 start=74 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=283 window=11 start=81 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=284 window=12 start=88 latency_us=106933 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=285 window=13 start=95 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Cough
+benchmark_sample sequence=286 window=14 start=2 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=287 window=15 start=9 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=288 window=0 start=16 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=289 window=1 start=23 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=290 window=2 start=30 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=291 window=3 start=37 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=292 window=4 start=44 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=293 window=5 start=51 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=294 window=6 start=58 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=295 window=7 start=65 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=296 window=8 start=72 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=297 window=9 start=79 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=298 window=10 start=86 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=299 window=11 start=93 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=300 window=12 start=0 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=301 window=13 start=7 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=302 window=14 start=14 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=303 window=15 start=21 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=304 window=0 start=28 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=305 window=1 start=35 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=306 window=2 start=42 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=307 window=3 start=49 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=308 window=4 start=56 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=309 window=5 start=63 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=310 window=6 start=70 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=311 window=7 start=77 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=312 window=8 start=84 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=313 window=9 start=91 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=314 window=10 start=98 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=315 window=11 start=5 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=316 window=12 start=12 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=317 window=13 start=19 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=318 window=14 start=26 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=319 window=15 start=33 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=320 window=0 start=40 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=321 window=1 start=47 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=322 window=2 start=54 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=323 window=3 start=61 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=324 window=4 start=68 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=325 window=5 start=75 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=326 window=6 start=82 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=327 window=7 start=89 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=328 window=8 start=96 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=329 window=9 start=3 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=330 window=10 start=10 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=331 window=11 start=17 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=332 window=12 start=24 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=333 window=13 start=31 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=334 window=14 start=38 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=335 window=15 start=45 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=336 window=0 start=52 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=337 window=1 start=59 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=338 window=2 start=66 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=339 window=3 start=73 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=340 window=4 start=80 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=341 window=5 start=87 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=342 window=6 start=94 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=343 window=7 start=1 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=344 window=8 start=8 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=345 window=9 start=15 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=346 window=10 start=22 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=347 window=11 start=29 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=348 window=12 start=36 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=349 window=13 start=43 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=350 window=14 start=50 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=351 window=15 start=57 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=352 window=0 start=64 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=353 window=1 start=71 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=354 window=2 start=78 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=355 window=3 start=85 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=356 window=4 start=92 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=357 window=5 start=99 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=358 window=6 start=6 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=359 window=7 start=13 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=360 window=8 start=20 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=361 window=9 start=27 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=362 window=10 start=34 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=363 window=11 start=41 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=364 window=12 start=48 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=365 window=13 start=55 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=366 window=14 start=62 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=367 window=15 start=69 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=368 window=0 start=76 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=369 window=1 start=83 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=370 window=2 start=90 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=371 window=3 start=97 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Speech
+benchmark_sample sequence=372 window=4 start=4 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=373 window=5 start=11 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=374 window=6 start=18 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=375 window=7 start=25 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=376 window=8 start=32 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=377 window=9 start=39 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=378 window=10 start=46 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=379 window=11 start=53 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=380 window=12 start=60 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=381 window=13 start=67 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=382 window=14 start=74 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=383 window=15 start=81 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=384 window=0 start=88 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=385 window=1 start=95 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=386 window=2 start=2 latency_us=106933 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=387 window=3 start=9 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=388 window=4 start=16 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=389 window=5 start=23 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=390 window=6 start=30 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=391 window=7 start=37 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=392 window=8 start=44 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=393 window=9 start=51 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=394 window=10 start=58 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=395 window=11 start=65 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=396 window=12 start=72 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=397 window=13 start=79 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=398 window=14 start=86 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=399 window=15 start=93 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=400 window=0 start=0 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=401 window=1 start=7 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=402 window=2 start=14 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=403 window=3 start=21 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=404 window=4 start=28 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=405 window=5 start=35 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=406 window=6 start=42 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=407 window=7 start=49 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=408 window=8 start=56 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=409 window=9 start=63 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=410 window=10 start=70 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=411 window=11 start=77 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=412 window=12 start=84 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=413 window=13 start=91 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=414 window=14 start=98 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=415 window=15 start=5 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=416 window=0 start=12 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=417 window=1 start=19 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=418 window=2 start=26 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=419 window=3 start=33 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=420 window=4 start=40 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=421 window=5 start=47 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=422 window=6 start=54 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=423 window=7 start=61 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=424 window=8 start=68 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=425 window=9 start=75 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=426 window=10 start=82 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=427 window=11 start=89 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=428 window=12 start=96 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=429 window=13 start=3 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=430 window=14 start=10 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=431 window=15 start=17 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=432 window=0 start=24 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=433 window=1 start=31 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=434 window=2 start=38 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=435 window=3 start=45 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=436 window=4 start=52 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=437 window=5 start=59 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=438 window=6 start=66 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=439 window=7 start=73 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=440 window=8 start=80 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=441 window=9 start=87 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=442 window=10 start=94 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=443 window=11 start=1 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=444 window=12 start=8 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=445 window=13 start=15 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=446 window=14 start=22 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=447 window=15 start=29 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=448 window=0 start=36 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=449 window=1 start=43 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=450 window=2 start=50 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=451 window=3 start=57 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=452 window=4 start=64 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=453 window=5 start=71 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=454 window=6 start=78 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=455 window=7 start=85 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=456 window=8 start=92 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=457 window=9 start=99 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=458 window=10 start=6 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=459 window=11 start=13 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=460 window=12 start=20 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=461 window=13 start=27 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=462 window=14 start=34 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=463 window=15 start=41 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=464 window=0 start=48 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=465 window=1 start=55 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=466 window=2 start=62 latency_us=106933 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=467 window=3 start=69 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=468 window=4 start=76 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=469 window=5 start=83 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=470 window=6 start=90 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=471 window=7 start=97 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=472 window=8 start=4 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=473 window=9 start=11 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=474 window=10 start=18 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=475 window=11 start=25 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=476 window=12 start=32 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=477 window=13 start=39 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=478 window=14 start=46 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=479 window=15 start=53 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=480 window=0 start=60 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=481 window=1 start=67 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=482 window=2 start=74 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=483 window=3 start=81 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=484 window=4 start=88 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=485 window=5 start=95 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=486 window=6 start=2 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=487 window=7 start=9 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=488 window=8 start=16 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=489 window=9 start=23 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=490 window=10 start=30 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=491 window=11 start=37 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=492 window=12 start=44 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=493 window=13 start=51 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=494 window=14 start=58 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=495 window=15 start=65 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=496 window=0 start=72 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=497 window=1 start=79 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=498 window=2 start=86 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=499 window=3 start=93 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Speech
+benchmark_sample sequence=500 window=4 start=0 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=501 window=5 start=7 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=502 window=6 start=14 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=503 window=7 start=21 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=504 window=8 start=28 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=505 window=9 start=35 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=506 window=10 start=42 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=507 window=11 start=49 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=508 window=12 start=56 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=509 window=13 start=63 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=510 window=14 start=70 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=511 window=15 start=77 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=512 window=0 start=84 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=513 window=1 start=91 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=514 window=2 start=98 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=515 window=3 start=5 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=516 window=4 start=12 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=517 window=5 start=19 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=518 window=6 start=26 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=519 window=7 start=33 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=520 window=8 start=40 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=521 window=9 start=47 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=522 window=10 start=54 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=523 window=11 start=61 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=524 window=12 start=68 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=525 window=13 start=75 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=526 window=14 start=82 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=527 window=15 start=89 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=528 window=0 start=96 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=529 window=1 start=3 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=530 window=2 start=10 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=531 window=3 start=17 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=532 window=4 start=24 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=533 window=5 start=31 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=534 window=6 start=38 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=535 window=7 start=45 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=536 window=8 start=52 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=537 window=9 start=59 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=538 window=10 start=66 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=539 window=11 start=73 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=540 window=12 start=80 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=541 window=13 start=87 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=542 window=14 start=94 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=543 window=15 start=1 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=544 window=0 start=8 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=545 window=1 start=15 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=546 window=2 start=22 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=547 window=3 start=29 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=548 window=4 start=36 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=549 window=5 start=43 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=550 window=6 start=50 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=551 window=7 start=57 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=552 window=8 start=64 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=553 window=9 start=71 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=554 window=10 start=78 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=555 window=11 start=85 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=556 window=12 start=92 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=557 window=13 start=99 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Cough
+benchmark_sample sequence=558 window=14 start=6 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=559 window=15 start=13 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=560 window=0 start=20 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=561 window=1 start=27 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=562 window=2 start=34 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=563 window=3 start=41 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=564 window=4 start=48 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=565 window=5 start=55 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=566 window=6 start=62 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=567 window=7 start=69 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=568 window=8 start=76 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=569 window=9 start=83 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=570 window=10 start=90 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=571 window=11 start=97 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=572 window=12 start=4 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=573 window=13 start=11 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=574 window=14 start=18 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=575 window=15 start=25 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=576 window=0 start=32 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=577 window=1 start=39 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=578 window=2 start=46 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=579 window=3 start=53 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=580 window=4 start=60 latency_us=106933 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=581 window=5 start=67 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=582 window=6 start=74 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=583 window=7 start=81 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=584 window=8 start=88 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=585 window=9 start=95 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=586 window=10 start=2 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=587 window=11 start=9 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=588 window=12 start=16 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=589 window=13 start=23 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=590 window=14 start=30 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=591 window=15 start=37 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=592 window=0 start=44 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=593 window=1 start=51 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=594 window=2 start=58 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=595 window=3 start=65 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=596 window=4 start=72 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=597 window=5 start=79 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=598 window=6 start=86 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=599 window=7 start=93 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=600 window=8 start=0 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=601 window=9 start=7 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=602 window=10 start=14 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=603 window=11 start=21 latency_us=106933 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=604 window=12 start=28 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=605 window=13 start=35 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=606 window=14 start=42 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=607 window=15 start=49 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=608 window=0 start=56 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=609 window=1 start=63 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=610 window=2 start=70 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=611 window=3 start=77 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=612 window=4 start=84 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=613 window=5 start=91 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=614 window=6 start=98 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=615 window=7 start=5 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=616 window=8 start=12 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=617 window=9 start=19 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=618 window=10 start=26 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=619 window=11 start=33 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=620 window=12 start=40 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=621 window=13 start=47 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=622 window=14 start=54 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=623 window=15 start=61 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=624 window=0 start=68 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=625 window=1 start=75 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=626 window=2 start=82 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=627 window=3 start=89 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Speech
+benchmark_sample sequence=628 window=4 start=96 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=629 window=5 start=3 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=630 window=6 start=10 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=631 window=7 start=17 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=632 window=8 start=24 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=633 window=9 start=31 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=634 window=10 start=38 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=635 window=11 start=45 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=636 window=12 start=52 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=637 window=13 start=59 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=638 window=14 start=66 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=639 window=15 start=73 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=640 window=0 start=80 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=641 window=1 start=87 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=642 window=2 start=94 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=643 window=3 start=1 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=644 window=4 start=8 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=645 window=5 start=15 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=646 window=6 start=22 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=647 window=7 start=29 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=648 window=8 start=36 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=649 window=9 start=43 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=650 window=10 start=50 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=651 window=11 start=57 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=652 window=12 start=64 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=653 window=13 start=71 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=654 window=14 start=78 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=655 window=15 start=85 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=656 window=0 start=92 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=657 window=1 start=99 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=658 window=2 start=6 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=659 window=3 start=13 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=660 window=4 start=20 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=661 window=5 start=27 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=662 window=6 start=34 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=663 window=7 start=41 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=664 window=8 start=48 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=665 window=9 start=55 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=666 window=10 start=62 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=667 window=11 start=69 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=668 window=12 start=76 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=669 window=13 start=83 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=670 window=14 start=90 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=671 window=15 start=97 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=672 window=0 start=4 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=673 window=1 start=11 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=674 window=2 start=18 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=675 window=3 start=25 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=676 window=4 start=32 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=677 window=5 start=39 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=678 window=6 start=46 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=679 window=7 start=53 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=680 window=8 start=60 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=681 window=9 start=67 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=682 window=10 start=74 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=683 window=11 start=81 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=684 window=12 start=88 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=685 window=13 start=95 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Cough
+benchmark_sample sequence=686 window=14 start=2 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=687 window=15 start=9 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=688 window=0 start=16 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=689 window=1 start=23 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=690 window=2 start=30 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=691 window=3 start=37 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=692 window=4 start=44 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=693 window=5 start=51 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=694 window=6 start=58 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=695 window=7 start=65 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=696 window=8 start=72 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=697 window=9 start=79 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=698 window=10 start=86 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=699 window=11 start=93 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=700 window=12 start=0 latency_us=106933 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=701 window=13 start=7 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=702 window=14 start=14 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=703 window=15 start=21 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=704 window=0 start=28 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=705 window=1 start=35 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=706 window=2 start=42 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=707 window=3 start=49 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=708 window=4 start=56 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=709 window=5 start=63 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=710 window=6 start=70 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=711 window=7 start=77 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=712 window=8 start=84 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=713 window=9 start=91 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=714 window=10 start=98 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=715 window=11 start=5 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=716 window=12 start=12 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=717 window=13 start=19 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=718 window=14 start=26 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=719 window=15 start=33 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=720 window=0 start=40 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=721 window=1 start=47 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=722 window=2 start=54 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=723 window=3 start=61 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=724 window=4 start=68 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=725 window=5 start=75 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=726 window=6 start=82 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=727 window=7 start=89 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=728 window=8 start=96 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=729 window=9 start=3 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=730 window=10 start=10 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=731 window=11 start=17 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=732 window=12 start=24 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=733 window=13 start=31 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=734 window=14 start=38 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=735 window=15 start=45 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=736 window=0 start=52 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=737 window=1 start=59 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=738 window=2 start=66 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=739 window=3 start=73 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=740 window=4 start=80 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=741 window=5 start=87 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=742 window=6 start=94 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=743 window=7 start=1 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=744 window=8 start=8 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=745 window=9 start=15 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=746 window=10 start=22 latency_us=106933 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=747 window=11 start=29 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=748 window=12 start=36 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=749 window=13 start=43 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=750 window=14 start=50 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=751 window=15 start=57 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=752 window=0 start=64 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=753 window=1 start=71 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=754 window=2 start=78 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=755 window=3 start=85 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=756 window=4 start=92 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=757 window=5 start=99 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=758 window=6 start=6 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=759 window=7 start=13 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=760 window=8 start=20 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=761 window=9 start=27 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=762 window=10 start=34 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=763 window=11 start=41 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=764 window=12 start=48 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=765 window=13 start=55 latency_us=106933 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=766 window=14 start=62 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=767 window=15 start=69 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=768 window=0 start=76 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=769 window=1 start=83 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=770 window=2 start=90 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=771 window=3 start=97 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Speech
+benchmark_sample sequence=772 window=4 start=4 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=773 window=5 start=11 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=774 window=6 start=18 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=775 window=7 start=25 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=776 window=8 start=32 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=777 window=9 start=39 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=778 window=10 start=46 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=779 window=11 start=53 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=780 window=12 start=60 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=781 window=13 start=67 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=782 window=14 start=74 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=783 window=15 start=81 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=784 window=0 start=88 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=785 window=1 start=95 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=786 window=2 start=2 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=787 window=3 start=9 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=788 window=4 start=16 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=789 window=5 start=23 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=790 window=6 start=30 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=791 window=7 start=37 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=792 window=8 start=44 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=793 window=9 start=51 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=794 window=10 start=58 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=795 window=11 start=65 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=796 window=12 start=72 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=797 window=13 start=79 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=798 window=14 start=86 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=799 window=15 start=93 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=800 window=0 start=0 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=801 window=1 start=7 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=802 window=2 start=14 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=803 window=3 start=21 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=804 window=4 start=28 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=805 window=5 start=35 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=806 window=6 start=42 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=807 window=7 start=49 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=808 window=8 start=56 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=809 window=9 start=63 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=810 window=10 start=70 latency_us=106933 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=811 window=11 start=77 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=812 window=12 start=84 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=813 window=13 start=91 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=814 window=14 start=98 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=815 window=15 start=5 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=816 window=0 start=12 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=817 window=1 start=19 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=818 window=2 start=26 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=819 window=3 start=33 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=820 window=4 start=40 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=821 window=5 start=47 latency_us=106933 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=822 window=6 start=54 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=823 window=7 start=61 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=824 window=8 start=68 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=825 window=9 start=75 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=826 window=10 start=82 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=827 window=11 start=89 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=828 window=12 start=96 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=829 window=13 start=3 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=830 window=14 start=10 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=831 window=15 start=17 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=832 window=0 start=24 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=833 window=1 start=31 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=834 window=2 start=38 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=835 window=3 start=45 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=836 window=4 start=52 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=837 window=5 start=59 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=838 window=6 start=66 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=839 window=7 start=73 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=840 window=8 start=80 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=841 window=9 start=87 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=842 window=10 start=94 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=843 window=11 start=1 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=844 window=12 start=8 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=845 window=13 start=15 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=846 window=14 start=22 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=847 window=15 start=29 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=848 window=0 start=36 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=849 window=1 start=43 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=850 window=2 start=50 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=851 window=3 start=57 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=852 window=4 start=64 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=853 window=5 start=71 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=854 window=6 start=78 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=855 window=7 start=85 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=856 window=8 start=92 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=857 window=9 start=99 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=858 window=10 start=6 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=859 window=11 start=13 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=860 window=12 start=20 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=861 window=13 start=27 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=862 window=14 start=34 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=863 window=15 start=41 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=864 window=0 start=48 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=865 window=1 start=55 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=866 window=2 start=62 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=867 window=3 start=69 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=868 window=4 start=76 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=869 window=5 start=83 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=870 window=6 start=90 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=871 window=7 start=97 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=872 window=8 start=4 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=873 window=9 start=11 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=874 window=10 start=18 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=875 window=11 start=25 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=876 window=12 start=32 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=877 window=13 start=39 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=878 window=14 start=46 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=879 window=15 start=53 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=880 window=0 start=60 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=881 window=1 start=67 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=882 window=2 start=74 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=883 window=3 start=81 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=884 window=4 start=88 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=885 window=5 start=95 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=886 window=6 start=2 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=887 window=7 start=9 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=888 window=8 start=16 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=889 window=9 start=23 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=890 window=10 start=30 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=891 window=11 start=37 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=892 window=12 start=44 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=893 window=13 start=51 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=894 window=14 start=58 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=895 window=15 start=65 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=896 window=0 start=72 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=897 window=1 start=79 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=898 window=2 start=86 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=899 window=3 start=93 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Speech
+benchmark_sample sequence=900 window=4 start=0 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=901 window=5 start=7 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=902 window=6 start=14 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=903 window=7 start=21 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=904 window=8 start=28 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=905 window=9 start=35 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=906 window=10 start=42 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=907 window=11 start=49 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=908 window=12 start=56 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=909 window=13 start=63 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=910 window=14 start=70 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=911 window=15 start=77 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=912 window=0 start=84 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=913 window=1 start=91 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=914 window=2 start=98 latency_us=106933 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=915 window=3 start=5 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=916 window=4 start=12 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=917 window=5 start=19 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=918 window=6 start=26 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=919 window=7 start=33 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=920 window=8 start=40 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=921 window=9 start=47 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=922 window=10 start=54 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=923 window=11 start=61 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=924 window=12 start=68 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=925 window=13 start=75 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=926 window=14 start=82 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=927 window=15 start=89 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=928 window=0 start=96 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=929 window=1 start=3 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=930 window=2 start=10 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=931 window=3 start=17 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=932 window=4 start=24 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=933 window=5 start=31 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=934 window=6 start=38 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=935 window=7 start=45 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=936 window=8 start=52 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=937 window=9 start=59 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=938 window=10 start=66 latency_us=106842 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=939 window=11 start=73 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan
+benchmark_sample sequence=940 window=12 start=80 latency_us=106872 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Deep breath
+benchmark_sample sequence=941 window=13 start=87 latency_us=106903 free_heap_before_bytes=748984 free_heap_after_bytes=748984 stack_remaining_bytes=748984 prediction=Groan

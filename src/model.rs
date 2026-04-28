@@ -44,6 +44,20 @@ impl QuantizedCnn {
             other => Err(Error::Unknown(other)),
         }
     }
+
+    pub fn run_samples_g(samples: &[[f32; CHANNELS]]) -> Result<Prediction, Error> {
+        assert!(samples.len() >= INPUT_LEN);
+
+        let mut input = [0i8; INPUT_SIZE];
+        for sample in 0..INPUT_LEN {
+            for channel in 0..CHANNELS {
+                input[sample * CHANNELS + channel] =
+                    quantize_normalized(samples[sample][channel], channel);
+            }
+        }
+
+        Self::run(&input)
+    }
 }
 
 pub struct ImuWindow {

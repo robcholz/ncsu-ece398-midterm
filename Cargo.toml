@@ -22,6 +22,7 @@ test = false
 harness = false
 
 [target.'cfg(all(target_arch = "arm", target_os = "none"))'.dependencies]
+bytesize = { version = "2.3.1", default-features = false }
 embassy-executor = { version = "0.10.0", features = ["platform-cortex-m", "executor-thread"] }
 embassy-futures = "0.1.2"
 embassy-stm32 = { version = "0.6.0", features = ["stm32u585ai", "time-driver-any", "memory-x"] }
