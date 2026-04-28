@@ -1,0 +1,187 @@
+{
+  "dataset": {
+    "data_root": "dataset/Multimodal Cough Dataset",
+    "num_windows": 6000,
+    "train_windows": 4563,
+    "val_windows": 1437,
+    "train_subjects": [
+      "005",
+      "006",
+      "007",
+      "008",
+      "009",
+      "010",
+      "011",
+      "012",
+      "013",
+      "014"
+    ],
+    "val_subjects": [
+      "015",
+      "016",
+      "017"
+    ],
+    "class_counts": {
+      "background": 3974,
+      "Cough": 419,
+      "Speech": 1241,
+      "Sneeze": 14,
+      "Deep breath": 84,
+      "Groan": 68,
+      "Laugh": 68,
+      "Speech (far)": 132
+    }
+  },
+  "model": {
+    "name": "SmallAccelCNN",
+    "input_shape": [
+      3,
+      200
+    ],
+    "params": 9800,
+    "size_mb": 0.037384033203125
+  },
+  "metrics": {
+    "accuracy": 0.5866388308977035,
+    "macro_f1": 0.1310794706630141,
+    "macro_recall": 0.13836388011269984,
+    "per_class": {
+      "background": {
+        "precision": 0.6950092421441775,
+        "recall": 0.789087093389297,
+        "f1": 0.7390663390663391,
+        "support": 953
+      },
+      "Cough": {
+        "precision": 0.11764705882352941,
+        "recall": 0.016129032258064516,
+        "f1": 0.02836879432624113,
+        "support": 124
+      },
+      "Speech": {
+        "precision": 0.26331360946745563,
+        "recall": 0.3016949152542373,
+        "f1": 0.2812006319115324,
+        "support": 295
+      },
+      "Sneeze": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 2
+      },
+      "Deep breath": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 16
+      },
+      "Groan": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 18
+      },
+      "Laugh": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 11
+      },
+      "Speech (far)": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 18
+      }
+    },
+    "confusion_matrix": [
+      [
+        752,
+        7,
+        194,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        75,
+        2,
+        47,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        198,
+        8,
+        89,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        15,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        16,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        9,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        17,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  "host": {
+    "device": "cpu",
+    "latency_ms_p50": 0.15275050100171939,
+    "latency_ms_p95": 0.20573154997691734,
+    "peak_ram_mb": 437.828125
+  }
+}

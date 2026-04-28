@@ -1,8 +1,25 @@
 [package]
-name = "ncsu-ece398-midterms"
+name = "ncsu-ece398-spring2026"
 version = "0.1.0"
 edition = "2024"
 build = "build.rs"
+autobins = false
+
+[lib]
+test = false
+harness = false
+
+[[bin]]
+name = "data-collection"
+path = "src/bin/data-collection.rs"
+test = false
+harness = false
+
+[[bin]]
+name = "benchmark"
+path = "src/bin/benchmark.rs"
+test = false
+harness = false
 
 [dependencies]
 embassy-executor = { version = "0.10.0", features = ["platform-cortex-m", "executor-thread"] }
@@ -11,6 +28,7 @@ embassy-stm32 = { version = "0.6.0", features = ["stm32u585ai", "time-driver-any
 embassy-time = { version = "0.5.1", features = ["tick-hz-32_768"] }
 embassy-usb = "0.6.0"
 
+# dont remove
 cortex-m = { version = "0.7.7", features = ["inline-asm", "critical-section-single-core"] }
 cortex-m-rt = "0.7.5"
 heapless = { version = "0.9", default-features = false }
