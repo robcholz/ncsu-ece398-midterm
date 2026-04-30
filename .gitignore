@@ -8,8 +8,7 @@ target/
 # python
 __pycache__/
 .venv/
-
-# uv
+.matplotlib-cache/
 .ruff_cache/
 
 dataset/Multimodal_Cough_Dataset.zip
@@ -17,3 +16,5 @@ dataset/Multimodal Cough Dataset
 
 model/artifacts/
 model/cmsis/imu_model_weights.h
+
+benchmark/dataset_visualization

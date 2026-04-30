@@ -89,13 +89,35 @@ cargo build --release --bin benchmark
 cargo flash --bin benchmark
 ```
 
-## Data Collection
+## Data Collection (Deprecated)
 
 ```shell
 uv run scripts/monitor_record.py <event_name> --output-dir <output_dir>
 uv run scripts/monitor_plot.py --csv <path_to_data>
 uv run scripts/interactive_plot.py --csv <path_to_data>
 ```
+
+## Dataset Visualization
+
+Generate dataset plots, extracted window features, and a firmware-format input
+preview:
+
+```shell
+uv run python scripts/visualize_dataset.py \
+  --max-windows 20000 \
+  --output-dir benchmark/dataset_visualization
+```
+
+The script writes:
+
+- `summary.md`: dataset shape, label counts, firmware constants, and expected input order.
+- `window_features.csv`: per-window features for each channel.
+- `feature_summary_by_class.csv`: feature means/std/medians by label.
+- `firmware_input_preview.csv`: one window flattened as `input[sample * CHANNELS + channel]`, with normalized and quantized int8 values.
+- `*.png`: class distribution, timeline, PCA, feature summary, and sample windows.
+
+The default visualization format matches the deployable model: 100 Hz,
+1-second windows, channels `[ax_g, ay_g, az_g, magnitude_g]`.
 
 ## Quality
 

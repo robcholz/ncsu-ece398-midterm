@@ -27,7 +27,9 @@ mod embedded {
     use ncsu_ece398_spring2026::model::{CHANNELS, INPUT_LEN, QuantizedCnn};
     use panic_halt as _;
 
-    use super::{BENCHMARK_WINDOW_COUNT, BENCHMARK_WINDOW_SAMPLES, BENCHMARK_WINDOWS};
+    use super::{
+        BENCHMARK_WINDOW_COUNT, BENCHMARK_WINDOW_SAMPLES, BENCHMARK_WINDOWS,
+    };
 
     use super::shared::{Disconnected, clock_config, write_line};
 

@@ -3,8 +3,8 @@ use std::fs;
 use std::io::{self, BufRead, BufReader, Write};
 use std::path::{Path, PathBuf};
 
-const WINDOW_SAMPLES: usize = 200;
-const WINDOW_LIMIT: usize = 16;
+const BENCHMARK_WINDOW_LIMIT: usize = 16;
+const DATASET_SAMPLE_RATE_HZ: f32 = 100.0;
 
 fn main() {
     let target_arch = env::var("CARGO_CFG_TARGET_ARCH").unwrap_or_default();
@@ -19,10 +19,7 @@ fn main() {
     }
 
     generate_rust_model_constants(&manifest_dir, &out_dir);
-
-    if let Err(err) = generate_benchmark_data(&manifest_dir, &out_dir) {
-        panic!("failed to generate benchmark data: {err}");
-    }
+    generate_benchmark_data(&manifest_dir, &out_dir);
 }
 
 fn compile_cmsis_model(manifest_dir: &Path, out_dir: &Path) {
@@ -160,128 +157,126 @@ fn read_define_usize(header: &str, name: &str) -> usize {
     panic!("missing #define {name} in model/cmsis/imu_model.h");
 }
 
-fn generate_benchmark_data(
-    manifest_dir: &Path,
-    out_dir: &Path,
-) -> Result<(), Box<dyn std::error::Error>> {
-    let recordings_dir = manifest_dir.join("recordings");
-    println!("cargo:rerun-if-changed={}", recordings_dir.display());
+fn generate_benchmark_data(manifest_dir: &Path, out_dir: &Path) {
+    let header_path = manifest_dir.join("model/cmsis/imu_model.h");
+    let header = fs::read_to_string(&header_path).expect("read imu_model.h");
+    let input_len = read_define_usize(&header, "IMU_MODEL_INPUT_LEN");
+    let channels = read_define_usize(&header, "IMU_MODEL_CHANNELS");
+    if channels != 4 {
+        panic!("benchmark data generation expects 4 channels, got {channels}");
+    }
 
-    let csv_files = discover_csv_files(&recordings_dir)?;
-    let windows = collect_windows(&csv_files)?;
+    let data_root = manifest_dir.join("dataset/Multimodal Cough Dataset");
+    println!("cargo:rerun-if-changed={}", data_root.display());
+    if !data_root.exists() {
+        panic!(
+            "missing dataset for firmware benchmark: {}",
+            data_root.display()
+        );
+    }
+
+    let csv_files = discover_dataset_accelerometer_files(&data_root)
+        .expect("discover dataset Accelerometer.csv files");
+    let windows = collect_dataset_windows(&csv_files, input_len);
     if windows.is_empty() {
-        return Err("no benchmark windows were generated from recordings".into());
+        panic!("no firmware benchmark windows were generated from dataset");
     }
 
     let out_path = out_dir.join("benchmark_data.rs");
-    let mut file = fs::File::create(out_path)?;
-
-    writeln!(
-        file,
-        "pub const BENCHMARK_WINDOW_SAMPLES: usize = {WINDOW_SAMPLES};"
-    )?;
-    writeln!(
-        file,
-        "pub const BENCHMARK_WINDOW_COUNT: usize = {};",
-        windows.len()
-    )?;
-    writeln!(
-        file,
-        "#[allow(clippy::approx_constant, clippy::excessive_precision)]"
-    )?;
-    writeln!(
-        file,
-        "pub static BENCHMARK_WINDOWS: [[[f32; 4]; {WINDOW_SAMPLES}]; {}] = [",
-        windows.len()
-    )?;
-
-    for window in &windows {
-        writeln!(file, "    [")?;
-        for sample in window {
-            writeln!(
-                file,
-                "        [{:.6}, {:.6}, {:.6}, {:.6}],",
-                sample[0], sample[1], sample[2], sample[3]
-            )?;
-        }
-        writeln!(file, "    ],")?;
-    }
-
-    writeln!(file, "];")?;
-    Ok(())
+    write_benchmark_data(&out_path, input_len, &windows).expect("write benchmark data");
 }
 
-fn discover_csv_files(root: &Path) -> io::Result<Vec<PathBuf>> {
+fn discover_dataset_accelerometer_files(root: &Path) -> io::Result<Vec<PathBuf>> {
     let mut paths = Vec::new();
-    visit_dir(root, &mut paths)?;
+    visit_dataset_dir(root, &mut paths)?;
     paths.sort();
     Ok(paths)
 }
 
-fn visit_dir(dir: &Path, paths: &mut Vec<PathBuf>) -> io::Result<()> {
+fn visit_dataset_dir(dir: &Path, paths: &mut Vec<PathBuf>) -> io::Result<()> {
     for entry in fs::read_dir(dir)? {
         let entry = entry?;
         let path = entry.path();
         if path.is_dir() {
-            visit_dir(&path, paths)?;
-        } else if path.extension().and_then(|ext| ext.to_str()) == Some("csv") {
+            visit_dataset_dir(&path, paths)?;
+        } else if path.file_name().and_then(|name| name.to_str()) == Some("Accelerometer.csv") {
             paths.push(path);
         }
     }
     Ok(())
 }
 
-fn collect_windows(
-    csv_files: &[PathBuf],
-) -> Result<Vec<[[f32; 4]; WINDOW_SAMPLES]>, Box<dyn std::error::Error>> {
+fn collect_dataset_windows(csv_files: &[PathBuf], input_len: usize) -> Vec<BenchmarkWindow> {
     let mut windows = Vec::new();
-
     for csv_path in csv_files {
-        let rows = load_recording(csv_path)?;
-        if rows.len() < WINDOW_SAMPLES {
+        let rows = load_dataset_accelerometer(csv_path)
+            .unwrap_or_else(|err| panic!("load {}: {err}", csv_path.display()));
+        if rows.len() < input_len {
             continue;
         }
-
-        windows.push(extract_window(&rows));
-        if windows.len() == WINDOW_LIMIT {
+        windows.push(BenchmarkWindow {
+            samples: extract_resampled_dataset_window(&rows, input_len),
+        });
+        if windows.len() == BENCHMARK_WINDOW_LIMIT {
             break;
         }
     }
-
-    Ok(windows)
+    windows
 }
 
-fn load_recording(csv_path: &Path) -> Result<Vec<[f32; 4]>, Box<dyn std::error::Error>> {
-    let file = fs::File::open(csv_path)?;
-    let reader = BufReader::new(file);
-    let mut rows = Vec::new();
+struct BenchmarkWindow {
+    samples: Vec<[f32; 4]>,
+}
 
+fn load_dataset_accelerometer(
+    csv_path: &Path,
+) -> Result<Vec<(f32, [f32; 3])>, Box<dyn std::error::Error>> {
+    let file = fs::File::open(csv_path)?;
+    let mut reader = BufReader::new(file);
+    let mut header = String::new();
+    reader.read_line(&mut header)?;
+    let headers: Vec<&str> = header.trim_end().split(',').collect();
+    let elapsed_idx = find_header(&headers, "elapsed (s)", csv_path)?;
+    let x_idx = find_header(&headers, "x-axis (g)", csv_path)?;
+    let y_idx = find_header(&headers, "y-axis (g)", csv_path)?;
+    let z_idx = find_header(&headers, "z-axis (g)", csv_path)?;
+
+    let mut rows = Vec::new();
     for (line_number, line_result) in reader.lines().enumerate() {
         let line = line_result?;
-        if line_number == 0 {
+        let fields: Vec<&str> = line.split(',').collect();
+        if fields.len() <= z_idx {
             continue;
         }
-
-        let mut fields = line.split(',');
-        let _timestamp = fields.next();
-        let ax = parse_field(fields.next(), csv_path, line_number + 1, "acc_x")?;
-        let ay = parse_field(fields.next(), csv_path, line_number + 1, "acc_y")?;
-        let az = parse_field(fields.next(), csv_path, line_number + 1, "acc_z")?;
-
-        let acc_mag = (ax * ax + ay * ay + az * az).sqrt();
-        rows.push([ax, ay, az, acc_mag]);
+        let line_number = line_number + 2;
+        let elapsed = parse_indexed_field(&fields, elapsed_idx, csv_path, line_number, "elapsed (s)")?;
+        let ax = parse_indexed_field(&fields, x_idx, csv_path, line_number, "x-axis (g)")?;
+        let ay = parse_indexed_field(&fields, y_idx, csv_path, line_number, "y-axis (g)")?;
+        let az = parse_indexed_field(&fields, z_idx, csv_path, line_number, "z-axis (g)")?;
+        rows.push((elapsed, [ax, ay, az]));
     }
-
     Ok(rows)
 }
 
-fn parse_field(
-    field: Option<&str>,
+fn find_header(
+    headers: &[&str],
+    name: &str,
+    csv_path: &Path,
+) -> Result<usize, Box<dyn std::error::Error>> {
+    headers
+        .iter()
+        .position(|header| *header == name)
+        .ok_or_else(|| format!("{} missing header {name}", csv_path.display()).into())
+}
+
+fn parse_indexed_field(
+    fields: &[&str],
+    index: usize,
     csv_path: &Path,
     line_number: usize,
     name: &str,
 ) -> Result<f32, Box<dyn std::error::Error>> {
-    let raw = field.ok_or_else(|| {
+    let raw = fields.get(index).ok_or_else(|| {
         format!(
             "{}:{} missing required field {name}",
             csv_path.display(),
@@ -299,16 +294,78 @@ fn parse_field(
     })
 }
 
-fn extract_window(rows: &[[f32; 4]]) -> [[f32; 4]; WINDOW_SAMPLES] {
-    let start = if rows.len() > WINDOW_SAMPLES {
-        (rows.len() - WINDOW_SAMPLES) / 2
+fn extract_resampled_dataset_window(rows: &[(f32, [f32; 3])], input_len: usize) -> Vec<[f32; 4]> {
+    let duration = input_len as f32 / DATASET_SAMPLE_RATE_HZ;
+    let first_time = rows.first().map(|row| row.0).unwrap_or(0.0);
+    let last_time = rows.last().map(|row| row.0).unwrap_or(first_time);
+    let start = if last_time - first_time > duration {
+        first_time + (last_time - first_time - duration) / 2.0
     } else {
-        0
+        first_time
     };
 
-    let mut window = [[0.0; 4]; WINDOW_SAMPLES];
-    for (index, slot) in window.iter_mut().enumerate() {
-        *slot = rows[start + index];
+    let mut window = Vec::with_capacity(input_len);
+    let mut cursor = 0usize;
+    for sample in 0..input_len {
+        let target = start + sample as f32 / DATASET_SAMPLE_RATE_HZ;
+        while cursor + 1 < rows.len() && rows[cursor + 1].0 < target {
+            cursor += 1;
+        }
+        let [ax, ay, az] = interpolate_dataset_sample(rows, cursor, target);
+        let magnitude = (ax * ax + ay * ay + az * az).sqrt();
+        window.push([ax, ay, az, magnitude]);
     }
     window
+}
+
+fn interpolate_dataset_sample(rows: &[(f32, [f32; 3])], cursor: usize, target: f32) -> [f32; 3] {
+    if cursor + 1 >= rows.len() {
+        return rows[cursor].1;
+    }
+    let (t0, v0) = rows[cursor];
+    let (t1, v1) = rows[cursor + 1];
+    if t1 <= t0 {
+        return v0;
+    }
+    let alpha = ((target - t0) / (t1 - t0)).clamp(0.0, 1.0);
+    [
+        v0[0] + alpha * (v1[0] - v0[0]),
+        v0[1] + alpha * (v1[1] - v0[1]),
+        v0[2] + alpha * (v1[2] - v0[2]),
+    ]
+}
+
+fn write_benchmark_data(
+    out_path: &Path,
+    input_len: usize,
+    windows: &[BenchmarkWindow],
+) -> io::Result<()> {
+    let mut file = fs::File::create(out_path)?;
+    writeln!(file, "// Generated by build.rs from dataset/Multimodal Cough Dataset.")?;
+    writeln!(file, "// Values are unnormalized g-units in [ax, ay, az, magnitude] order.")?;
+    writeln!(file, "pub const BENCHMARK_WINDOW_SAMPLES: usize = {input_len};")?;
+    writeln!(
+        file,
+        "pub const BENCHMARK_WINDOW_COUNT: usize = {};",
+        windows.len()
+    )?;
+    writeln!(file, "#[allow(clippy::approx_constant, clippy::excessive_precision)]")?;
+    writeln!(
+        file,
+        "pub static BENCHMARK_WINDOWS: [[[f32; 4]; {input_len}]; {}] = [",
+        windows.len()
+    )?;
+    for window in windows {
+        writeln!(file, "    [")?;
+        for sample in &window.samples {
+            writeln!(
+                file,
+                "        [{:.6}f32, {:.6}f32, {:.6}f32, {:.6}f32],",
+                sample[0], sample[1], sample[2], sample[3]
+            )?;
+        }
+        writeln!(file, "    ],")?;
+    }
+    writeln!(file, "];")?;
+    Ok(())
 }
