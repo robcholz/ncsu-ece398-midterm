@@ -51,31 +51,13 @@ uv run python -m benchmark.host \
   --save-model model/artifacts/final_multiclass_small_event_centered.pt
 ```
 
-Better:
-
-```shell
-uv run python -m benchmark.ensemble \
-  --checkpoint model/artifacts/final_multiclass_small_event_centered.pt \
-  --checkpoint model/artifacts/final_multiclass_featurefusion_event_centered.pt \
-  --weights 0.6,0.4 \
-  --batch-size 64 \
-  --latency-runs 500 \
-  --output benchmark/results/final_multiclass_ensemble_accuracy_event_centered.json
-```
-
-For the best macro-F1 ensemble from the current run, use `--weights 0.9,0.1`
-and write to `benchmark/results/final_multiclass_ensemble_macro_event_centered.json`.
-
-Current host benchmark results on the subject holdout split
-`015,016,017`:
-
 ### 2. Export CMSIS-NN C Weights
 
 This is the CLI that generates the model C header used by the firmware:
 
 ```shell
 uv run python -m model.export_cmsis \
-  --checkpoint <path-to-checkpoint> \
+  --checkpoint model/artifacts/final_multiclass_small_event_centered.pt \
   --output model/cmsis/imu_model_weights.h \
   --max-calibration-windows 2048 \
   --activation-percentile 100
@@ -87,7 +69,7 @@ The firmware build compiles the hand-written wrapper plus the generated weights 
 
 ```shell
 uv run python -m benchmark.quantized_c \
-  --checkpoint <path-to-checkpoint> \
+  --checkpoint model/artifacts/final_multiclass_small_event_centered.pt \
   --output benchmark/results/quantized_c_eval.json
 ```
 

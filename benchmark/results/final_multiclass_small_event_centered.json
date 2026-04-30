@@ -47,6 +47,8 @@
     "epochs": 30,
     "batch_size": 64,
     "lr": 0.001,
+    "weight_decay": 0.0,
+    "label_smoothing": 0.0,
     "window_seconds": 1.0,
     "stride": 0.5,
     "label_overlap_threshold": 0.15,
@@ -62,7 +64,11 @@
     "event_windows_per_event": 3,
     "event_jitter_seconds": 0.25,
     "background_windows_per_event": 1.0,
-    "background_exclusion_seconds": 0.25
+    "background_exclusion_seconds": 0.25,
+    "eventness_loss_weight": 0.0,
+    "augment_noise_std": 0.0,
+    "augment_scale_std": 0.0,
+    "augment_time_shift": 0
   },
   "metrics": {
     "accuracy": 0.2670074714903657,
@@ -203,8 +209,8 @@
   },
   "host": {
     "device": "cpu",
-    "latency_ms_p50": 0.1383540002279915,
-    "latency_ms_p95": 0.1616604007722344,
-    "peak_ram_mb": 446.390625
+    "latency_ms_p50": 0.1356249995296821,
+    "latency_ms_p95": 0.15063544778968208,
+    "peak_ram_mb": 447.40625
   }
 }
