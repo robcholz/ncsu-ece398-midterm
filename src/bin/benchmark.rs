@@ -14,7 +14,6 @@ mod embedded {
 
     use bytesize::ByteSize;
     use cortex_m::register::msp;
-    use cortex_m_rt::heap_start;
     use embassy_executor::Spawner;
     use embassy_futures::join::join;
     use embassy_stm32::usb::{Driver, Instance};
@@ -200,14 +199,16 @@ mod embedded {
         let mut line: String<384> = String::new();
         write!(
             &mut line,
-            "benchmark_sample sequence={} window={} start={} latency_us={} free_heap_before_bytes={} free_heap_after_bytes={} stack_remaining_bytes={} prediction={}",
+            "benchmark_sample sequence={} window={} start={} latency_ms={} allocator_free_before={} allocator_free_after={} allocator_used_before={} allocator_used_after={} stack_remaining={} prediction={}",
             sample.sequence,
             sample.window,
             sample.start,
-            sample.latency_us,
-            sample.free_heap_before_bytes,
-            sample.free_heap_after_bytes,
-            sample.stack_remaining_bytes,
+            sample.latency_ms,
+            ByteSize(sample.allocator_free_before_bytes as u64),
+            ByteSize(sample.allocator_free_after_bytes as u64),
+            ByteSize(sample.allocator_used_before_bytes as u64),
+            ByteSize(sample.allocator_used_after_bytes as u64),
+            ByteSize(sample.stack_remaining_bytes as u64),
             sample.prediction,
         )
         .unwrap();
@@ -218,21 +219,25 @@ mod embedded {
         sequence: usize,
         window: usize,
         start: usize,
-        latency_us: u32,
-        free_heap_before_bytes: usize,
-        free_heap_after_bytes: usize,
+        latency_ms: u32,
+        allocator_free_before_bytes: usize,
+        allocator_free_after_bytes: usize,
+        allocator_used_before_bytes: usize,
+        allocator_used_after_bytes: usize,
         stack_remaining_bytes: usize,
         prediction: &'static str,
     }
 
     fn measure_once(sequence: usize) -> Result<LiveSample, &'static str> {
-        let before_inference_free_heap_bytes = free_heap_bytes();
+        let allocator_free_before_bytes = ALLOCATOR.free();
+        let allocator_used_before_bytes = ALLOCATOR.used();
         let location = benchmark_window_location(sequence);
 
         let started = Instant::now();
         let prediction = run_benchmark_window(location).map_err(|_| "inference failed")?;
-        let latency_us = started.elapsed().as_micros() as u32;
-        let free_heap_after_bytes = free_heap_bytes();
+        let latency_ms = started.elapsed().as_millis() as u32;
+        let allocator_free_after_bytes = ALLOCATOR.free();
+        let allocator_used_after_bytes = ALLOCATOR.used();
         let stack_remaining_bytes = current_stack_remaining_bytes();
         black_box(prediction);
 
@@ -240,9 +245,11 @@ mod embedded {
             sequence,
             window: location.window,
             start: location.start,
-            latency_us,
-            free_heap_before_bytes: before_inference_free_heap_bytes,
-            free_heap_after_bytes,
+            latency_ms,
+            allocator_free_before_bytes,
+            allocator_free_after_bytes,
+            allocator_used_before_bytes,
+            allocator_used_after_bytes,
             stack_remaining_bytes,
             prediction: prediction.class_name,
         })
@@ -279,12 +286,6 @@ mod embedded {
             model_binary_size_bytes: MODEL_BINARY_SIZE_BYTES,
             model_static_ram_bytes: MODEL_STATIC_RAM_BYTES,
         }
-    }
-
-    fn free_heap_bytes() -> usize {
-        let heap_start = heap_start() as usize;
-        let stack_pointer = msp::read() as usize;
-        stack_pointer.saturating_sub(heap_start)
     }
 
     fn readable_bytes(bytes: usize) -> impl core::fmt::Display {
