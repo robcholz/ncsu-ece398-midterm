@@ -64,7 +64,9 @@ def locate_llvm_size(cwd: Path) -> Path:
     if match is None:
         raise RuntimeError("unable to determine Rust host triple from rustc -vV")
 
-    llvm_size = toolchain_root / "lib" / "rustlib" / match.group(1) / "bin" / "llvm-size"
+    llvm_size = (
+        toolchain_root / "lib" / "rustlib" / match.group(1) / "bin" / "llvm-size"
+    )
     if not llvm_size.exists():
         raise FileNotFoundError(
             f"llvm-size not found at {llvm_size}. Install llvm-tools-preview with rustup."

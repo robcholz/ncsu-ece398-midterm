@@ -66,7 +66,9 @@ def main() -> int:
     device = torch.device(args.device)
     model.to(device)
 
-    train_dataset = TensorDataset(torch.from_numpy(split.x_train), torch.from_numpy(split.y_train))
+    train_dataset = TensorDataset(
+        torch.from_numpy(split.x_train), torch.from_numpy(split.y_train)
+    )
     sampler = balanced_sampler(split.y_train) if args.balanced_sampler else None
     train_loader = DataLoader(
         train_dataset,
@@ -82,20 +84,39 @@ def main() -> int:
     loss_weight = None
     if not args.balanced_sampler:
         loss_weight = class_weights(split.y_train, len(split.class_names)).to(device)
-    criterion = nn.CrossEntropyLoss(weight=loss_weight)
-    optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
+    criterion = nn.CrossEntropyLoss(
+        weight=loss_weight,
+        label_smoothing=args.label_smoothing,
+    )
+    optimizer = torch.optim.AdamW(
+        model.parameters(),
+        lr=args.lr,
+        weight_decay=args.weight_decay,
+    )
     best_state = None
     best_macro_f1 = -1.0
     best_report = None
 
     for epoch in range(1, args.epochs + 1):
-        loss = train_one_epoch(model, train_loader, criterion, optimizer, device)
+        loss = train_one_epoch(
+            model,
+            train_loader,
+            criterion,
+            optimizer,
+            device,
+            args.eventness_loss_weight,
+            args.augment_noise_std,
+            args.augment_scale_std,
+            args.augment_time_shift,
+        )
         y_true, y_pred = predict(model, val_loader, device)
         report = classification_report(y_true, y_pred, split.class_names)
         if report["macro_f1"] > best_macro_f1:
             best_macro_f1 = report["macro_f1"]
             best_report = report
-            best_state = {key: value.cpu().clone() for key, value in model.state_dict().items()}
+            best_state = {
+                key: value.cpu().clone() for key, value in model.state_dict().items()
+            }
         print(
             f"epoch={epoch} loss={loss:.4f} "
             f"val_accuracy={report['accuracy']:.4f} val_macro_f1={report['macro_f1']:.4f}"
@@ -124,9 +145,7 @@ def main() -> int:
             "train_subjects": split.train_subjects,
             "val_subjects": split.val_subjects,
             "class_counts": {
-                name: int(
-                    ((np.concatenate([split.y_train, split.y_val])) == idx).sum()
-                )
+                name: int(((np.concatenate([split.y_train, split.y_val])) == idx).sum())
                 for idx, name in enumerate(split.class_names)
             },
         },
@@ -142,6 +161,8 @@ def main() -> int:
             "epochs": args.epochs,
             "batch_size": args.batch_size,
             "lr": args.lr,
+            "weight_decay": args.weight_decay,
+            "label_smoothing": args.label_smoothing,
             "window_seconds": args.window_seconds,
             "stride": args.stride,
             "label_overlap_threshold": args.label_overlap_threshold,
@@ -158,6 +179,10 @@ def main() -> int:
             "event_jitter_seconds": args.event_jitter_seconds,
             "background_windows_per_event": args.background_windows_per_event,
             "background_exclusion_seconds": args.background_exclusion_seconds,
+            "eventness_loss_weight": args.eventness_loss_weight,
+            "augment_noise_std": args.augment_noise_std,
+            "augment_scale_std": args.augment_scale_std,
+            "augment_time_shift": args.augment_time_shift,
         },
         "metrics": serialize_report(best_report),
         "host": {
@@ -203,9 +228,24 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--epochs", type=int, default=5)
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--lr", type=float, default=1e-3)
-    parser.add_argument("--model", choices=("small", "medium"), default="small")
+    parser.add_argument("--weight-decay", type=float, default=0.0)
+    parser.add_argument("--label-smoothing", type=float, default=0.0)
+    parser.add_argument(
+        "--model",
+        choices=(
+            "small",
+            "medium",
+            "multiscale",
+            "featurefusion",
+            "convgru",
+            "statsmlp",
+        ),
+        default="small",
+    )
     parser.add_argument("--dropout", type=float, default=0.2)
-    parser.add_argument("--task", choices=("multiclass", "binary-cough"), default="multiclass")
+    parser.add_argument(
+        "--task", choices=("multiclass", "binary-cough"), default="multiclass"
+    )
     parser.add_argument("--window-seconds", type=float, default=2.0)
     parser.add_argument("--stride", type=float, default=0.5)
     parser.add_argument("--label-overlap-threshold", type=float, default=0.3)
@@ -220,11 +260,37 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--event-jitter-seconds", type=float, default=0.25)
     parser.add_argument("--background-windows-per-event", type=float, default=1.0)
     parser.add_argument("--background-exclusion-seconds", type=float, default=0.25)
+    parser.add_argument(
+        "--eventness-loss-weight",
+        type=float,
+        default=0.0,
+        help="Auxiliary background-vs-event loss weight for models that expose an eventness head.",
+    )
     parser.add_argument("--val-subject", action="append")
     parser.add_argument("--include-magnitude", action="store_true")
-    parser.add_argument("--normalization", choices=("none", "window", "train"), default="none")
+    parser.add_argument(
+        "--normalization", choices=("none", "window", "train"), default="none"
+    )
     parser.add_argument("--normalize", action="store_true")
     parser.add_argument("--balanced-sampler", action="store_true")
+    parser.add_argument(
+        "--augment-noise-std",
+        type=float,
+        default=0.0,
+        help="Gaussian train-time noise std in normalized input units.",
+    )
+    parser.add_argument(
+        "--augment-scale-std",
+        type=float,
+        default=0.0,
+        help="Per-window multiplicative train-time scale jitter std.",
+    )
+    parser.add_argument(
+        "--augment-time-shift",
+        type=int,
+        default=0,
+        help="Maximum absolute train-time temporal roll in samples.",
+    )
     parser.add_argument("--tune-threshold", action="store_true")
     parser.add_argument(
         "--threshold-metric",
@@ -316,21 +382,72 @@ def train_one_epoch(
     criterion: nn.Module,
     optimizer: torch.optim.Optimizer,
     device: torch.device,
+    eventness_loss_weight: float = 0.0,
+    augment_noise_std: float = 0.0,
+    augment_scale_std: float = 0.0,
+    augment_time_shift: int = 0,
 ) -> float:
     model.train()
     total_loss = 0.0
     total_items = 0
     for x_batch, y_batch in loader:
-        x_batch = x_batch.to(device)
+        x_batch = augment_batch(
+            x_batch.to(device),
+            augment_noise_std,
+            augment_scale_std,
+            augment_time_shift,
+        )
         y_batch = y_batch.to(device)
         optimizer.zero_grad(set_to_none=True)
-        logits = model(x_batch)
+        output = model(x_batch)
+        logits = primary_logits(output)
         loss = criterion(logits, y_batch)
+        if eventness_loss_weight > 0 and auxiliary_logits(output) is not None:
+            event_target = (y_batch != 0).long()
+            loss = loss + eventness_loss_weight * nn.functional.cross_entropy(
+                auxiliary_logits(output),
+                event_target,
+            )
         loss.backward()
         optimizer.step()
         total_loss += float(loss.item()) * len(y_batch)
         total_items += len(y_batch)
     return total_loss / max(total_items, 1)
+
+
+def augment_batch(
+    x: torch.Tensor,
+    noise_std: float,
+    scale_std: float,
+    max_time_shift: int,
+) -> torch.Tensor:
+    if noise_std <= 0 and scale_std <= 0 and max_time_shift <= 0:
+        return x
+
+    augmented = x
+    if scale_std > 0:
+        scale = torch.randn(
+            augmented.shape[0],
+            augmented.shape[1],
+            1,
+            device=augmented.device,
+            dtype=augmented.dtype,
+        )
+        augmented = augmented * (1.0 + scale_std * scale)
+    if noise_std > 0:
+        augmented = augmented + torch.randn_like(augmented) * noise_std
+    if max_time_shift > 0:
+        shifts = torch.randint(
+            -max_time_shift,
+            max_time_shift + 1,
+            (augmented.shape[0],),
+            device=augmented.device,
+        )
+        shifted = torch.empty_like(augmented)
+        for idx, shift in enumerate(shifts.tolist()):
+            shifted[idx] = torch.roll(augmented[idx], shifts=shift, dims=-1)
+        augmented = shifted
+    return augmented
 
 
 def predict(
@@ -343,7 +460,7 @@ def predict(
     pred_batches = []
     with torch.no_grad():
         for x_batch, y_batch in loader:
-            logits = model(x_batch.to(device))
+            logits = primary_logits(model(x_batch.to(device)))
             pred = logits.argmax(dim=1).cpu().numpy()
             true_batches.append(y_batch.numpy())
             pred_batches.append(pred)
@@ -360,7 +477,7 @@ def predict_positive_probability(
     prob_batches = []
     with torch.no_grad():
         for x_batch, y_batch in loader:
-            logits = model(x_batch.to(device))
+            logits = primary_logits(model(x_batch.to(device)))
             probabilities = torch.softmax(logits, dim=1)[:, 1].cpu().numpy()
             true_batches.append(y_batch.numpy())
             prob_batches.append(probabilities)
@@ -414,6 +531,18 @@ def measure_latency(
         "p50_ms": float(np.percentile(timings, 50)),
         "p95_ms": float(np.percentile(timings, 95)),
     }
+
+
+def primary_logits(output):
+    if isinstance(output, tuple):
+        return output[0]
+    return output
+
+
+def auxiliary_logits(output):
+    if isinstance(output, tuple) and len(output) > 1:
+        return output[1]
+    return None
 
 
 def peak_rss_mb() -> float:

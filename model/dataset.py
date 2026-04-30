@@ -242,7 +242,11 @@ def _add_sliding_windows(
         windows.append(window)
         labels.append(label)
         metadata.append(
-            {"subject": recording.subject, "trial": recording.trial, "source": "sliding"}
+            {
+                "subject": recording.subject,
+                "trial": recording.trial,
+                "source": "sliding",
+            }
         )
         cursor += config.stride_seconds
     return event_count
@@ -265,7 +269,9 @@ def _add_event_centered_windows(
     for event in recording.events:
         center = (event.start + event.end) / 2
         for _ in range(max(config.event_windows_per_event, 1)):
-            jitter = rng.uniform(-config.event_jitter_seconds, config.event_jitter_seconds)
+            jitter = rng.uniform(
+                -config.event_jitter_seconds, config.event_jitter_seconds
+            )
             window_start = _clamp_window_start(
                 center - config.window_seconds / 2 + jitter,
                 start,
@@ -287,7 +293,9 @@ def _add_event_centered_windows(
     )
     attempts = 0
     added_background = 0
-    while added_background < background_target and attempts < max(background_target * 30, 30):
+    while added_background < background_target and attempts < max(
+        background_target * 30, 30
+    ):
         attempts += 1
         window_start = rng.uniform(start, end)
         window_end = window_start + config.window_seconds
@@ -348,7 +356,9 @@ def subject_holdout_split(
     else:
         val_subject_tuple = tuple(sorted(val_subjects))
     val_subject_set = set(val_subject_tuple)
-    train_subject_tuple = tuple(subject for subject in subjects if subject not in val_subject_set)
+    train_subject_tuple = tuple(
+        subject for subject in subjects if subject not in val_subject_set
+    )
 
     val_mask = np.asarray([item["subject"] in val_subject_set for item in metadata])
     train_mask = ~val_mask

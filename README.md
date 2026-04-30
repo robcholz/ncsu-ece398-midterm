@@ -20,12 +20,14 @@ rustup component add llvm-tools-preview
 The model pipeline is:
 
 1. Build labeled accelerometer windows from `dataset/Multimodal Cough Dataset`.
-2. Train the small multiclass CNN and save a PyTorch checkpoint.
+2. Train a multiclass CNN and save a PyTorch checkpoint.
 3. Export that checkpoint to CMSIS-NN int8 C weights.
 4. Evaluate the generated C model on the host.
 5. Build the Rust firmware binary that links the CMSIS-NN C model through FFI.
 
 ### 1. Train and Save the Checkpoint
+
+Small deployment model:
 
 ```shell
 uv run python -m benchmark.host \
@@ -49,13 +51,31 @@ uv run python -m benchmark.host \
   --save-model model/artifacts/final_multiclass_small_event_centered.pt
 ```
 
+Better:
+
+```shell
+uv run python -m benchmark.ensemble \
+  --checkpoint model/artifacts/final_multiclass_small_event_centered.pt \
+  --checkpoint model/artifacts/final_multiclass_featurefusion_event_centered.pt \
+  --weights 0.6,0.4 \
+  --batch-size 64 \
+  --latency-runs 500 \
+  --output benchmark/results/final_multiclass_ensemble_accuracy_event_centered.json
+```
+
+For the best macro-F1 ensemble from the current run, use `--weights 0.9,0.1`
+and write to `benchmark/results/final_multiclass_ensemble_macro_event_centered.json`.
+
+Current host benchmark results on the subject holdout split
+`015,016,017`:
+
 ### 2. Export CMSIS-NN C Weights
 
 This is the CLI that generates the model C header used by the firmware:
 
 ```shell
 uv run python -m model.export_cmsis \
-  --checkpoint model/artifacts/final_multiclass_small_event_centered.pt \
+  --checkpoint <path-to-checkpoint> \
   --output model/cmsis/imu_model_weights.h \
   --max-calibration-windows 2048 \
   --activation-percentile 100
@@ -67,7 +87,7 @@ The firmware build compiles the hand-written wrapper plus the generated weights 
 
 ```shell
 uv run python -m benchmark.quantized_c \
-  --checkpoint model/artifacts/final_multiclass_small_event_centered.pt \
+  --checkpoint <path-to-checkpoint> \
   --output benchmark/results/quantized_c_eval.json
 ```
 

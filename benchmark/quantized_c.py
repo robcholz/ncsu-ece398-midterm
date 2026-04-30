@@ -56,10 +56,16 @@ def main() -> int:
         "checkpoint": str(args.checkpoint),
         "weights": str(args.weights),
         "validation_windows": int(len(y_true)),
-        "float_metrics": serialize_report(classification_report(y_true, float_pred, class_names)),
-        "quantized_c_metrics": serialize_report(classification_report(y_true, c_pred, class_names)),
+        "float_metrics": serialize_report(
+            classification_report(y_true, float_pred, class_names)
+        ),
+        "quantized_c_metrics": serialize_report(
+            classification_report(y_true, c_pred, class_names)
+        ),
         "float_vs_quantized_c": {
-            "prediction_agreement": float(np.mean(float_pred == c_pred)) if len(c_pred) else 0.0,
+            "prediction_agreement": float(np.mean(float_pred == c_pred))
+            if len(c_pred)
+            else 0.0,
             "changed_predictions": int(np.count_nonzero(float_pred != c_pred)),
         },
     }
@@ -73,8 +79,12 @@ def main() -> int:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--checkpoint", type=Path, required=True)
-    parser.add_argument("--weights", type=Path, default=Path("model/cmsis/imu_model_weights.h"))
-    parser.add_argument("--data-root", type=Path, default=Path("dataset/Multimodal Cough Dataset"))
+    parser.add_argument(
+        "--weights", type=Path, default=Path("model/cmsis/imu_model_weights.h")
+    )
+    parser.add_argument(
+        "--data-root", type=Path, default=Path("dataset/Multimodal Cough Dataset")
+    )
     parser.add_argument("--build-dir", type=Path, default=Path("target/cmsis-host"))
     parser.add_argument("--output", type=Path)
     parser.add_argument("--max-windows", type=int)
@@ -99,7 +109,9 @@ def load_split(args: argparse.Namespace, checkpoint: dict):
         background_exclusion_seconds=config.get("background_exclusion_seconds", 0.25),
         seed=398,
     )
-    x, y, metadata = build_windows(args.data_root, window_config, max_windows=args.max_windows)
+    x, y, metadata = build_windows(
+        args.data_root, window_config, max_windows=args.max_windows
+    )
     split = subject_holdout_split(x, y, metadata)
     split = apply_task(split, config["task"])
     if config["normalization"] == "train":
@@ -163,7 +175,9 @@ def run_c_model(lib_path: Path, x_val: np.ndarray, input_scale: float) -> np.nda
             output.ctypes.data_as(ctypes.POINTER(ctypes.c_int8)),
         )
         if status != 0:
-            raise RuntimeError(f"imu_model_run failed for window {idx}: status={status}")
+            raise RuntimeError(
+                f"imu_model_run failed for window {idx}: status={status}"
+            )
         logits[idx] = output
     return logits
 

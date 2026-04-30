@@ -55,7 +55,9 @@ class DatasetWindowTests(unittest.TestCase):
             self.assertEqual(x.shape, (4, 3, 200))
             self.assertEqual(y.tolist().count(LABELS.index("Cough")), 2)
             self.assertEqual(y.tolist().count(LABELS.index("background")), 2)
-            self.assertEqual({item["source"] for item in metadata}, {"event", "background"})
+            self.assertEqual(
+                {item["source"] for item in metadata}, {"event", "background"}
+            )
 
     def _make_dataset(self, root: Path) -> Path:
         dataset_root = root / "Multimodal Cough Dataset"

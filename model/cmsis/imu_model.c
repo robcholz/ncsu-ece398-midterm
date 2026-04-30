@@ -8,14 +8,14 @@
 #define RELU_MIN (0)
 #define RELU_MAX (127)
 
-static int8_t conv1_out[1 * 1 * 100 * 16];
-static int8_t pool1_out[1 * 1 * 50 * 16];
-static int8_t conv2_out[1 * 1 * 50 * 32];
-static int8_t pool2_out[1 * 1 * 25 * 32];
-static int8_t conv3_out[1 * 1 * 25 * 64];
-static int8_t gap_out[64];
-static int8_t scratch[8192];
-static int32_t avgpool_scratch[64];
+static int8_t conv1_out[1 * 1 * IMU_MODEL_INPUT_LEN * IMU_CONV1_OUT_CH];
+static int8_t pool1_out[1 * 1 * IMU_POOL1_OUT_W * IMU_CONV1_OUT_CH];
+static int8_t conv2_out[1 * 1 * IMU_POOL1_OUT_W * IMU_CONV2_OUT_CH];
+static int8_t pool2_out[1 * 1 * IMU_POOL2_OUT_W * IMU_CONV2_OUT_CH];
+static int8_t conv3_out[1 * 1 * IMU_POOL2_OUT_W * IMU_CONV3_OUT_CH];
+static int8_t gap_out[IMU_CONV3_OUT_CH];
+static int8_t scratch[IMU_MODEL_SCRATCH_SIZE];
+static int32_t avgpool_scratch[IMU_CONV3_OUT_CH];
 
 static int run_conv(const int8_t *input,
                     int32_t input_w,
@@ -87,11 +87,11 @@ static int run_gap(const int8_t *input, int8_t *output)
 {
     cmsis_nn_context ctx = {.buf = avgpool_scratch, .size = sizeof(avgpool_scratch)};
     cmsis_nn_pool_params params = {0};
-    cmsis_nn_dims input_dims = {.n = 1, .h = 1, .w = 25, .c = 64};
-    cmsis_nn_dims filter_dims = {.n = 1, .h = 1, .w = 25, .c = 1};
-    cmsis_nn_dims output_dims = {.n = 1, .h = 1, .w = 1, .c = 64};
+    cmsis_nn_dims input_dims = {.n = 1, .h = 1, .w = IMU_POOL2_OUT_W, .c = IMU_CONV3_OUT_CH};
+    cmsis_nn_dims filter_dims = {.n = 1, .h = 1, .w = IMU_POOL2_OUT_W, .c = 1};
+    cmsis_nn_dims output_dims = {.n = 1, .h = 1, .w = 1, .c = IMU_CONV3_OUT_CH};
 
-    params.stride.w = 25;
+    params.stride.w = IMU_POOL2_OUT_W;
     params.stride.h = 1;
     params.padding.w = 0;
     params.padding.h = 0;
@@ -118,10 +118,10 @@ static int run_fc(const int8_t *input, int8_t *output)
         .multiplier = IMU_FC_MULT,
         .shift = IMU_FC_SHIFT,
     };
-    cmsis_nn_dims input_dims = {.n = 1, .h = 1, .w = 1, .c = 64};
-    cmsis_nn_dims filter_dims = {.n = 8, .h = 1, .w = 1, .c = 64};
-    cmsis_nn_dims bias_dims = {.n = 1, .h = 1, .w = 1, .c = 8};
-    cmsis_nn_dims output_dims = {.n = 1, .h = 1, .w = 1, .c = 8};
+    cmsis_nn_dims input_dims = {.n = 1, .h = 1, .w = 1, .c = IMU_CONV3_OUT_CH};
+    cmsis_nn_dims filter_dims = {.n = IMU_MODEL_CLASSES, .h = 1, .w = 1, .c = IMU_CONV3_OUT_CH};
+    cmsis_nn_dims bias_dims = {.n = 1, .h = 1, .w = 1, .c = IMU_MODEL_CLASSES};
+    cmsis_nn_dims output_dims = {.n = 1, .h = 1, .w = 1, .c = IMU_MODEL_CLASSES};
 
     params.input_offset = 0;
     params.filter_offset = 0;
@@ -143,19 +143,19 @@ static int run_fc(const int8_t *input, int8_t *output)
 
 int imu_model_run(const int8_t *input_data, int8_t *output_logits)
 {
-    int status = run_conv(input_data, 100, 4, IMU_CONV1_W, IMU_CONV1_B, IMU_CONV1_MULT, IMU_CONV1_SHIFT, 5, 16, conv1_out);
+    int status = run_conv(input_data, IMU_MODEL_INPUT_LEN, IMU_MODEL_CHANNELS, IMU_CONV1_W, IMU_CONV1_B, IMU_CONV1_MULT, IMU_CONV1_SHIFT, 5, IMU_CONV1_OUT_CH, conv1_out);
     if (status != IMU_MODEL_OK)
         return status;
-    status = run_maxpool(conv1_out, 100, 16, pool1_out);
+    status = run_maxpool(conv1_out, IMU_MODEL_INPUT_LEN, IMU_CONV1_OUT_CH, pool1_out);
     if (status != IMU_MODEL_OK)
         return status;
-    status = run_conv(pool1_out, 50, 16, IMU_CONV2_W, IMU_CONV2_B, IMU_CONV2_MULT, IMU_CONV2_SHIFT, 5, 32, conv2_out);
+    status = run_conv(pool1_out, IMU_POOL1_OUT_W, IMU_CONV1_OUT_CH, IMU_CONV2_W, IMU_CONV2_B, IMU_CONV2_MULT, IMU_CONV2_SHIFT, 5, IMU_CONV2_OUT_CH, conv2_out);
     if (status != IMU_MODEL_OK)
         return status;
-    status = run_maxpool(conv2_out, 50, 32, pool2_out);
+    status = run_maxpool(conv2_out, IMU_POOL1_OUT_W, IMU_CONV2_OUT_CH, pool2_out);
     if (status != IMU_MODEL_OK)
         return status;
-    status = run_conv(pool2_out, 25, 32, IMU_CONV3_W, IMU_CONV3_B, IMU_CONV3_MULT, IMU_CONV3_SHIFT, 3, 64, conv3_out);
+    status = run_conv(pool2_out, IMU_POOL2_OUT_W, IMU_CONV2_OUT_CH, IMU_CONV3_W, IMU_CONV3_B, IMU_CONV3_MULT, IMU_CONV3_SHIFT, 3, IMU_CONV3_OUT_CH, conv3_out);
     if (status != IMU_MODEL_OK)
         return status;
     status = run_gap(conv3_out, gap_out);

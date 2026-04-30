@@ -3,9 +3,9 @@
 This exporter targets the deployment wrapper in ``model/cmsis/imu_model.c``:
 
     input [1, 1, 100, 4]
-    conv 4->16 k=5 + relu + maxpool
-    conv 16->32 k=5 + relu + maxpool
-    conv 32->64 k=3 + relu + global avgpool
+    conv k=5 + relu + maxpool
+    conv k=5 + relu + maxpool
+    conv k=3 + relu + global avgpool
     fully-connected 64->8
 
 The generated header uses symmetric int8 quantization and per-output-channel
@@ -31,10 +31,10 @@ def main() -> int:
     args = parse_args()
     checkpoint = torch.load(args.checkpoint, map_location="cpu", weights_only=False)
     if checkpoint["model"] != "small":
-        raise SystemExit("CMSIS exporter currently targets the small CNN deployment wrapper.")
+        raise SystemExit("CMSIS exporter currently targets the small deployment CNN.")
 
     model = build_model(
-        "small",
+        checkpoint["model"],
         in_channels=checkpoint["input_shape"][0],
         num_classes=len(checkpoint["class_names"]),
     )
@@ -51,9 +51,13 @@ def main() -> int:
     calibration = load_calibration_windows(args, checkpoint)
     scales = calibrate_scales(model, calibration, args.activation_percentile)
     layers = extract_small_layers(model, scales)
+    architecture = extract_deployment_architecture(model, checkpoint)
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(render_header(checkpoint, scales, layers), encoding="utf-8")
+    args.output.write_text(
+        render_header(checkpoint, architecture, scales, layers),
+        encoding="utf-8",
+    )
     print(f"wrote {args.output}")
     return 0
 
@@ -61,7 +65,9 @@ def main() -> int:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--checkpoint", type=Path, required=True)
-    parser.add_argument("--output", type=Path, default=Path("model/cmsis/imu_model_weights.h"))
+    parser.add_argument(
+        "--output", type=Path, default=Path("model/cmsis/imu_model_weights.h")
+    )
     parser.add_argument(
         "--data-root",
         type=Path,
@@ -78,7 +84,9 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def load_calibration_windows(args: argparse.Namespace, checkpoint: dict) -> torch.Tensor:
+def load_calibration_windows(
+    args: argparse.Namespace, checkpoint: dict
+) -> torch.Tensor:
     config = checkpoint["config"]
     window_config = WindowConfig(
         window_seconds=config["window_seconds"],
@@ -94,7 +102,9 @@ def load_calibration_windows(args: argparse.Namespace, checkpoint: dict) -> torc
         background_exclusion_seconds=config.get("background_exclusion_seconds", 0.25),
         seed=398,
     )
-    x, y, metadata = build_windows(args.data_root, window_config, args.max_calibration_windows)
+    x, y, metadata = build_windows(
+        args.data_root, window_config, args.max_calibration_windows
+    )
     split = subject_holdout_split(x, y, metadata)
     split = apply_task(split, config["task"])
     if config["normalization"] == "train":
@@ -131,7 +141,9 @@ def symmetric_scale(tensor: torch.Tensor, percentile: float) -> float:
     return max(max_abs / 127.0, 1.0 / 32768.0)
 
 
-def extract_small_layers(model: torch.nn.Module, scales: dict[str, float]) -> dict[str, dict]:
+def extract_small_layers(
+    model: torch.nn.Module, scales: dict[str, float]
+) -> dict[str, dict]:
     layers = model.net
     conv1_w, conv1_b = fold_conv_bn(layers[0], layers[1])
     conv2_w, conv2_b = fold_conv_bn(layers[4], layers[5])
@@ -151,12 +163,22 @@ def extract_small_layers(model: torch.nn.Module, scales: dict[str, float]) -> di
     }
 
 
-def fold_conv_bn(conv: torch.nn.Conv1d, bn: torch.nn.BatchNorm1d) -> tuple[np.ndarray, np.ndarray]:
+def fold_conv_bn(
+    conv: torch.nn.Conv1d, bn: torch.nn.BatchNorm1d
+) -> tuple[np.ndarray, np.ndarray]:
     weight = conv.weight.detach().cpu()
-    bias = conv.bias.detach().cpu() if conv.bias is not None else torch.zeros(weight.shape[0])
-    scale = bn.weight.detach().cpu() / torch.sqrt(bn.running_var.detach().cpu() + bn.eps)
+    bias = (
+        conv.bias.detach().cpu()
+        if conv.bias is not None
+        else torch.zeros(weight.shape[0])
+    )
+    scale = bn.weight.detach().cpu() / torch.sqrt(
+        bn.running_var.detach().cpu() + bn.eps
+    )
     folded_weight = weight * scale.reshape(-1, 1, 1)
-    folded_bias = (bias - bn.running_mean.detach().cpu()) * scale + bn.bias.detach().cpu()
+    folded_bias = (
+        bias - bn.running_mean.detach().cpu()
+    ) * scale + bn.bias.detach().cpu()
     return folded_weight.numpy(), folded_bias.numpy()
 
 
@@ -167,12 +189,22 @@ def quantize_conv(
     output_scale: float,
 ) -> dict:
     out_ch, in_ch, kernel = weight_oik.shape
-    weight_scales = np.maximum(np.max(np.abs(weight_oik), axis=(1, 2)) / 127.0, 1.0 / 32768.0)
-    quant_weight = np.round(weight_oik / weight_scales[:, None, None]).clip(-127, 127).astype(np.int8)
+    weight_scales = np.maximum(
+        np.max(np.abs(weight_oik), axis=(1, 2)) / 127.0, 1.0 / 32768.0
+    )
+    quant_weight = (
+        np.round(weight_oik / weight_scales[:, None, None])
+        .clip(-127, 127)
+        .astype(np.int8)
+    )
     # CMSIS-NN filter layout is [out_ch, kernel_h=1, kernel_w, in_ch].
-    cmsis_weight = np.transpose(quant_weight, (0, 2, 1)).reshape(out_ch, 1, kernel, in_ch)
+    cmsis_weight = np.transpose(quant_weight, (0, 2, 1)).reshape(
+        out_ch, 1, kernel, in_ch
+    )
     quant_bias = np.round(bias / (input_scale * weight_scales)).astype(np.int32)
-    multipliers, shifts = quantize_multiplier(input_scale * weight_scales / output_scale)
+    multipliers, shifts = quantize_multiplier(
+        input_scale * weight_scales / output_scale
+    )
     return {
         "weight": cmsis_weight.reshape(-1),
         "bias": quant_bias,
@@ -191,7 +223,9 @@ def quantize_linear(
     weight_scale = max_abs / 127.0
     quant_weight = np.round(weight_oi / weight_scale).clip(-127, 127).astype(np.int8)
     quant_bias = np.round(bias / (input_scale * weight_scale)).astype(np.int32)
-    multiplier, shift = quantize_multiplier(np.asarray([input_scale * weight_scale / output_scale]))
+    multiplier, shift = quantize_multiplier(
+        np.asarray([input_scale * weight_scale / output_scale])
+    )
     return {
         "weight": quant_weight.reshape(-1),
         "bias": quant_bias,
@@ -218,7 +252,29 @@ def quantize_multiplier(real_multiplier: np.ndarray) -> tuple[np.ndarray, np.nda
     return np.asarray(multipliers, dtype=np.int32), np.asarray(shifts, dtype=np.int32)
 
 
-def render_header(checkpoint: dict, scales: dict[str, float], layers: dict[str, dict]) -> str:
+def extract_deployment_architecture(
+    model: torch.nn.Module, checkpoint: dict
+) -> dict[str, int]:
+    layers = model.net
+    return {
+        "input_len": int(checkpoint["input_shape"][1]),
+        "channels": int(checkpoint["input_shape"][0]),
+        "classes": len(checkpoint["class_names"]),
+        "conv1_out": int(layers[0].out_channels),
+        "conv2_out": int(layers[4].out_channels),
+        "conv3_out": int(layers[8].out_channels),
+        "pool1_out_w": int(checkpoint["input_shape"][1]) // 2,
+        "pool2_out_w": int(checkpoint["input_shape"][1]) // 4,
+        "scratch_size": 32768,
+    }
+
+
+def render_header(
+    checkpoint: dict,
+    architecture: dict[str, int],
+    scales: dict[str, float],
+    layers: dict[str, dict],
+) -> str:
     norm = checkpoint.get("normalization") or {
         "mean": [0.0] * checkpoint["input_shape"][0],
         "std": [1.0] * checkpoint["input_shape"][0],
@@ -231,6 +287,13 @@ def render_header(checkpoint: dict, scales: dict[str, float], layers: dict[str, 
             "#include <stdint.h>",
             "",
             "// Generated by: uv run python -m model.export_cmsis",
+            f'#define IMU_EXPORTED_MODEL_KIND "{checkpoint["model"]}"',
+            f"#define IMU_CONV1_OUT_CH {architecture['conv1_out']}",
+            f"#define IMU_CONV2_OUT_CH {architecture['conv2_out']}",
+            f"#define IMU_CONV3_OUT_CH {architecture['conv3_out']}",
+            f"#define IMU_POOL1_OUT_W {architecture['pool1_out_w']}",
+            f"#define IMU_POOL2_OUT_W {architecture['pool2_out_w']}",
+            f"#define IMU_MODEL_SCRATCH_SIZE {architecture['scratch_size']}",
             f"#define IMU_MODEL_INPUT_ZERO_POINT 0",
             f"#define IMU_MODEL_INPUT_SCALE {scales['input']:.10g}f",
             "",
